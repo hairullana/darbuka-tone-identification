@@ -244,6 +244,40 @@
         <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,  <br> there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics</p>
       </div>
     </div>
+
+    <section class="contact-form">
+        <div class="container">
+            <div class="row">
+                <form id="contact-form" method="post">
+                  {% csrf_token %}
+                    <div class="col-md-6 col-sm-12">
+                        <div class="block">
+                            <div class="form-group">
+                                <input name="windowLength" type="text" class="form-control" placeholder="Panjang Window (detik) = {{ windowLength }}">
+                            </div>
+                            <div class="form-group">
+                                <input name="frameLength" type="text" class="form-control" placeholder="Panjang Frame (detik) = {{ frameLength }}">
+                            </div>
+                            <div class="form-group">
+                                <input name="mfccCoefficients" type="text" class="form-control" placeholder="Jumlah Koefisien MFCC = {{ mfccCoefficients }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="block">
+                            <div class="form-group-2">
+                                <input name="k" type="text" class="form-control" placeholder="Jumlah K pada KNN = {{ k }}">
+                            </div>
+                            <button class="btn btn-default" type="submit">Send Message</button>
+                        </div>
+                    </div>
+                    <div class="error" id="error">Sorry Msg dose not sent</div>
+                    <div class="success" id="success">Message Sent</div>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <div class="row">
       <div class="col-md-6">
         <div class="block">
@@ -373,4 +407,3 @@
     </body>
 
     </html>
-   
