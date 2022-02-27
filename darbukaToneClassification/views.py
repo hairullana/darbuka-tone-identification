@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from DataLatih.functions.automaticClassificationFunc import klasifikasiNada
+from DataLatih.functions.automaticClassificationFunc import klasifikasiNada, klasifikasiNadaDasar
 
 def index(request):
   data = {
@@ -12,6 +12,7 @@ def index(request):
   if request.method == 'POST':
     if 'automaticClassification' in request.POST :
       data['hasilKlasifikasiDum'], data['hasilKlasifikasiTak'], data['hasilKlasifikasiSlap'], data['hasilPresentaseKlasifikasi'] = klasifikasiNada(data['windowLength'], data['frameLength'], data['mfccCoefficients'], data['k'])
+      data['text'] = klasifikasiNadaDasar(data['windowLength'], data['frameLength'], data['mfccCoefficients'], data['k'])
     else :
       data['windowLength'] = request.POST['windowLength']
       data['frameLength'] = request.POST['frameLength']

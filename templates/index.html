@@ -305,6 +305,20 @@
             </div>
           {% endif %}
             
+
+          <div class="block">
+            <div class="row">
+              
+              {% for t in text %}
+                
+                <col-md-12>
+                  {{ t |safe }}
+                </col-md-12>
+
+              {% endfor %}
+                
+            </div>
+          </div>
         </div>
       </div>
     </div>
