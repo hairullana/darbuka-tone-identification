@@ -2713,3 +2713,7 @@ font header .navbar-default .navbar-nav li a:hover {
 }
 
 /*# sourceMappingURL=maps/style.css.map */
+.service-item img {
+  height: 126px;
+  width: auto;
+}
