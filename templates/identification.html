@@ -134,7 +134,11 @@
 												[FALSE]
 											{% endif %}
 										</h4>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
+										<p>
+											<audio controls autoplay>
+												<source src="{% static 'dataset/toneBasic/dum/dum' %}{{ forloop.counter }}.wav" type="audio/wav">
+											</audio>
+										</p>
 									</div>
 								</div>
 							{% endfor %}
@@ -155,7 +159,11 @@
 												[FALSE]
 											{% endif %}
 										</h4>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
+										<p>
+											<audio controls autoplay>
+												<source src="{% static 'dataset/toneBasic/tak/tak' %}{{ forloop.counter }}.wav" type="audio/wav">
+											</audio>
+										</p>
 									</div>
 								</div>
 							{% endfor %}
@@ -176,7 +184,11 @@
 												[FALSE]
 											{% endif %}
 										</h4>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
+										<p>
+											<audio controls autoplay>
+												<source src="{% static 'dataset/toneBasic/slap/slap' %}{{ forloop.counter }}.wav" type="audio/wav">
+											</audio>
+										</p>
 									</div>
 								</div>
 							{% endfor %}
