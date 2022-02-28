@@ -83,16 +83,16 @@
 					
 					<div class="col-md-4">
 						<div class="row">
-							<h3 class="text-center" style="margin-bottom: 15px;"><strong>DUM Tone</strong></h3>
+							<h3 class="text-center" style="margin-bottom: 15px;"><strong>DUM TONE</strong></h3>
 							{% for result in hasilKlasifikasiDum %}
 								<div class="col">
 									<div class="block">
 										<h4 class="text-center">
 											Result : {{ result }} 
 											{% if result == 'DUM' %}
-												[TRUE]
+												[✅]
 											{% else %}
-												[FALSE]
+												[❌]
 											{% endif %}
 										</h4>
 										<p>
@@ -108,16 +108,16 @@
 					
 					<div class="col-md-4">
 						<div class="row">
-							<h3 class="text-center" style="margin-bottom: 15px;"><strong>TAK Tone</strong></h3>
+							<h3 class="text-center" style="margin-bottom: 15px;"><strong>TAK TONE</strong></h3>
 							{% for result in hasilKlasifikasiTak %}
 								<div class="col">
 									<div class="block">
 										<h4 class="text-center">
 											Result : {{ result }} 
 											{% if result == 'TAK' %}
-												[TRUE]
+												[✅]
 											{% else %}
-												[FALSE]
+												[❌]
 											{% endif %}
 										</h4>
 										<p>
@@ -133,16 +133,16 @@
 					
 					<div class="col-md-4">
 						<div class="row">
-							<h3 class="text-center" style="margin-bottom: 15px;"><strong>SLAP Tone</strong></h3>
+							<h3 class="text-center" style="margin-bottom: 15px;"><strong>SLAP TONE</strong></h3>
 							{% for result in hasilKlasifikasiSlap %}
 								<div class="col">
 									<div class="block">
 										<h4 class="text-center">
 											Result : {{ result }} 
-											{% if result == 'Slap' %}
-												[TRUE]
+											{% if result == 'SLAP' %}
+												[✅]
 											{% else %}
-												[FALSE]
+												[❌]
 											{% endif %}
 										</h4>
 										<p>
