@@ -11,32 +11,19 @@ def training(request):
 
 def basicTone(request):
   context = {
-    'title': 'Basic Tone Identification',
-    'description': 'Identify the basic hadrah tone (DUM, TAK/KA, SLAP) with Mel Frequency Cepstral Coefficient (MFCC) and K-Nearest Neighbor (KNN) algorithm',
-    'automaticIdentification': 'basicTone',
-  }
-
-  if request.method == 'POST':
-    context['hasilKlasifikasiDum'], context['hasilKlasifikasiTak'], context['hasilKlasifikasiSlap'], context['hasilPresentaseKlasifikasi'] = klasifikasiNada(float(request.POST['windowLength']), float(request.POST['frameLength']), 13, int(request.POST['k']))
-
-  return render(request, 'identification.html', context)
-
-def tonePattern(request):
-  context = {
-    'title': 'Tone Pattern Identification',
-    'description': 'Identify hadrah tone pattern (DUM, TAK/KA, SLAP) with Mel Frequency Cepstral Coefficient (MFCC), Onset Detection and K-Nearest Neighbor (KNN) algorithm',
     'windowLength': 0.02,
     'frameLength': 0.01,
     'k': 1,
-    'automaticIdentification': 'tonePattern',
   }
 
   if request.method == 'POST':
-    if 'tonePattern' in request.POST :
-      context['text'] = klasifikasiNadaDasar(context['windowLength'], context['frameLength'], 13, context['k'])
-    else :
-      context['windowLength'] = request.POST['windowLength']
-      context['frameLength'] = request.POST['frameLength']
-      context['k'] = request.POST['k']
+    context['windowLength'] = request.POST['windowLength']
+    context['frameLength'] = request.POST['frameLength']
+    context['k'] = request.POST['k']
+    
+    if 'basicTone' in request.POST :
+      context['hasilKlasifikasiDum'], context['hasilKlasifikasiTak'], context['hasilKlasifikasiSlap'], context['hasilPresentaseKlasifikasi'] = klasifikasiNada(float(request.POST['windowLength']), float(request.POST['frameLength']), 13, int(request.POST['k']))
+    elif 'tonePattern' in request.POST :
+      context['hasilKlasifikasiBaladi'], context['hasilKlasifikasiMaqsum'], context['hasilKlasifikasiSayyidi'], context['hasilPresentaseKlasifikasi'] = klasifikasiNadaDasar(float(request.POST['windowLength']), float(request.POST['frameLength']), 13, int(request.POST['k']))
 
   return render(request, 'identification.html', context)

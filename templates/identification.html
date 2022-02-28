@@ -10,8 +10,10 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="block">
-						<h1>{{ title }}</h1>
-						<p>{{ description }}</p>
+						<h1>Darbuka Tone Identification</h1>
+						<p>
+							Identify Darbuka Basic Tone and Tone Pattern<br/>
+							using Mel Frequency Cepstral Coefficient (MFCC), Onset Detection and K-Nearest Neighbor (KNN) algorithm</p>
 					</div>
 				</div>
 			</div>
@@ -23,35 +25,38 @@
 		<div class="container">
 			<div class="row">
 				<h2 class="text-center">Input Parameter</h2>
-				<div class="col-md-5">
+				<div class="col-md-6">
 					<img class="img-responsive" src="{% static 'images/wrapper-img.png' %}">
 				</div>
-				<div class="col-md-7">
-					<form class="row contact-form" id="contact-form" style="margin: 0 10px;" method="post">
+				<div class="col-md-6">
+					<form class="row contact-form" id="contact-form" style="margin: 0 10px;" method="post" action="#result">
 						{% csrf_token %}
 						<div class="block">
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="windowLength" type="number" step="0.001" value="0.02" class="form-control" placeholder="Window Length">
+										<label for="windowLength">Window Length ({{ windowLength }})</label>
+										<input id="windowLength" name="windowLength" type="number" step="0.001" value="{{ windowLength }}" class="form-control" placeholder="Window Length">
 									</div>
 								</div>
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="frameLength" type="number" step="0.001" value="0.01" class="form-control" placeholder="Frame Length">
+										<label for="frameLength">Frame Length ({{ frameLength }})</label>
+										<input id="frameLength" name="frameLength" type="number" step="0.001" value="{{ frameLength }}" class="form-control" placeholder="Frame Length">
 									</div>
 								</div>
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="k" type="number" value="1" class="form-control" placeholder="K">
+										<label for="k">K ({{ k }})</label>
+										<input id="k" name="k" type="number" value="{{ k }}" class="form-control" placeholder="K">
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-6">
-								<button class="btn btn-default" type="submit">Send Message</button>
+								<button class="btn btn-default" name="basicTone" type="submit">Basic Tone</button>
 							</div>
 							<div class="col-sm-6">
-								<button class="btn btn-default" name="{{ automaticIdentification }}" type="submit">Automatic Identification</button>
+								<button class="btn btn-default" name="tonePattern" type="submit">Tone Pattern</button>
 							</div>
 						</div>
 					</form>
@@ -60,13 +65,13 @@
 		</div>
 	</section>
 
-	{% if hasilPresentaseKlasifikasi %}
-		<section class="service-list section bg-gray">
+	{% if hasilKlasifikasiDum %}
+		<section class="service-list section bg-gray" id="result">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="section-title text-center">
-							<h2>Result of Darbuka Tone Identification</h2>
+							<h2>Result of Darbuka Basic Tone Identification</h2>
 						</div>
 					</div>
 				</div>
@@ -160,5 +165,141 @@
 			</div>
 		</section>
 	{% endif %}
+
+	
+	{% if hasilKlasifikasiBaladi %}
+		<section class="service-list section bg-gray" id="result">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="section-title text-center">
+							<h2>Result of Darbuka Tone Pattern Identification</h2>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="col-md-12">
+						<div class="col">
+							<div class="block text-center">
+								<h3><strong>ACCURACY</strong></h3>
+								<p>{{ hasilPresentaseKlasifikasi |safe }}</p>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="row">
+							<h3 class="text-center" style="margin-bottom: 15px;">
+								<strong>
+									BALADI<br/>
+									DUM - DUM - TAK - DUM - TAK
+								</strong>
+							</h3>
+							{% for result in hasilKlasifikasiBaladi %}
+								<div class="col">
+									<div class="block">
+										<h4 class="text-center">
+											{{ result.0 }}
+											<br/>
+											
+											{% for toneDetect in result.1 %}
+												
+												{% if toneDetect == True %}
+												✅-
+												{% else %}
+												❌-
+												{% endif %}
+													
+											{% endfor %}
+										</h4>
+										<p>
+											<audio controls>
+												<source src="{% static 'dataset/tonePattern/baladi2_' %}{{ forloop.counter }}.wav" type="audio/wav">
+											</audio>
+										</p>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="row">
+							<h3 class="text-center" style="margin-bottom: 15px;">
+								<strong>
+									MAQSUM<br/>
+									DUM - TAK - TAK - DUM - TAK
+								</strong>
+							</h3>
+							{% for result in hasilKlasifikasiMaqsum %}
+								<div class="col">
+									<div class="block">
+										<h4 class="text-center">
+											{{ result.0 }}
+											<br/>
+											
+											{% for toneDetect in result.1 %}
+												
+												{% if toneDetect == True %}
+												✅-
+												{% else %}
+												❌-
+												{% endif %}
+													
+											{% endfor %}
+										</h4>
+										<p>
+											<audio controls>
+												<source src="{% static 'dataset/tonePattern/maqsum2_' %}{{ forloop.counter }}.wav" type="audio/wav">
+											</audio>
+										</p>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="row">
+							<h3 class="text-center" style="margin-bottom: 15px;">
+								<strong>
+									SAYYIDI<br/>
+									DUM - TAK - DUM - DUM - TAK
+								</strong>
+							</h3>
+							{% for result in hasilKlasifikasiSayyidi %}
+								<div class="col">
+									<div class="block">
+										<h4 class="text-center">
+											{{ result.0 }}
+											<br/>
+											
+											{% for toneDetect in result.1 %}
+												
+												{% if toneDetect == True %}
+												✅-
+												{% else %}
+												❌-
+												{% endif %}
+													
+											{% endfor %}
+										</h4>
+										<p>
+											<audio controls>
+												<source src="{% static 'dataset/tonePattern/sayyidi2_' %}{{ forloop.counter }}.wav" type="audio/wav">
+											</audio>
+										</p>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	{% endif %}
+		
 
 {% endblock body %}
