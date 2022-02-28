@@ -18,6 +18,7 @@
 		</div>
 	</section>
 
+	<!-- input parameter -->
 	<section class="section">
 		<div class="container">
 			<div class="row">
@@ -26,27 +27,31 @@
 					<img class="img-responsive" src="{% static 'images/wrapper-img.png' %}">
 				</div>
 				<div class="col-md-7">
-					<form class="row contact-form" id="contact-form" style="margin: 0 10px;">
+					<form class="row contact-form" id="contact-form" style="margin: 0 10px;" method="post">
+						{% csrf_token %}
 						<div class="block">
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="windowLength" type="number" step="0.01" class="form-control" placeholder="Window Length">
+										<input name="windowLength" type="number" step="0.01" value="{{ windowLength }}" class="form-control" placeholder="Window Length">
 									</div>
 								</div>
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="frameLength" type="number" step="0.01" class="form-control" placeholder="Frame Length">
+										<input name="frameLength" type="number" step="0.01" value="{{ frameLength }}" class="form-control" placeholder="Frame Length">
 									</div>
 								</div>
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="mfccCoefficient" type="number" class="form-control" placeholder="MFCC Coefficient">
+										<input name="mfccCoefficient" type="number" value="{{ k }}" class="form-control" placeholder="MFCC Coefficient">
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-12">
+							<div class="col-sm-6">
 								<button class="btn btn-default" type="submit">Send Message</button>
+							</div>
+							<div class="col-sm-6">
+								<button class="btn btn-default" name="{{ automaticIdentification }}" type="submit">Automatic Identification</button>
 							</div>
 						</div>
 					</form>
@@ -54,6 +59,45 @@
 			</div>
 		</div>
 	</section>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="block">
+				
+				{% if hasilPresentaseKlasifikasi %}
+					<div class="row">
+						<div class="col-md-4">
+							<p>{{ hasilKlasifikasiDum |safe }}</p>
+						</div>
+						<div class="col-md-4">
+							<p>{{ hasilKlasifikasiTak |safe }}</p>
+						</div>
+						<div class="col-md-4">
+							<p>{{ hasilKlasifikasiSlap |safe }}</p>
+						</div>
+						<div class="col-12 text-center">
+							{{ hasilPresentaseKlasifikasi |safe }}
+						</div>
+					</div>
+				{% endif %}
+					
+
+				
+				{% if text %}
+					<div class="block">
+						<div class="row">
+							{% for t in text %}
+								<col-md-12>
+									{{ t |safe }}
+								</col-md-12>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+					
+			</div>
+		</div>
+	</div>
 
 	<section class="service-arrow">
 		<div class="container-fluid">
@@ -127,20 +171,6 @@
 					<div class="block">
 						<h4>Design sprints & prototyping</h4>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="call-to-action bg-1 section-sm overly">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="block">
-						<h2>We design delightful digital experiences.</h2>
-						<p>Read more about what we do and our philosophy of design. Judge for yourself The work and results <br> we’ve achieved for other clients, and meet our highly experienced Team who just love to design.</p>
-						<a class="btn btn-main btn-solid-border" href="#" >Tell Us Your Story</a>
 					</div>
 				</div>
 			</div>
