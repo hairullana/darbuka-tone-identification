@@ -33,17 +33,17 @@
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="windowLength" type="number" step="0.01" value="{{ windowLength }}" class="form-control" placeholder="Window Length">
+										<input name="windowLength" type="number" step="0.001" value="0.02" class="form-control" placeholder="Window Length">
 									</div>
 								</div>
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="frameLength" type="number" step="0.01" value="{{ frameLength }}" class="form-control" placeholder="Frame Length">
+										<input name="frameLength" type="number" step="0.001" value="0.01" class="form-control" placeholder="Frame Length">
 									</div>
 								</div>
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="mfccCoefficient" type="number" value="{{ k }}" class="form-control" placeholder="MFCC Coefficient">
+										<input name="k" type="number" value="1" class="form-control" placeholder="K">
 									</div>
 								</div>
 							</div>
@@ -59,45 +59,6 @@
 			</div>
 		</div>
 	</section>
-
-	<!-- <div class="row">
-		<div class="col-md-12">
-			<div class="block">
-				
-				{% if hasilPresentaseKlasifikasi %}
-					<div class="row">
-						<div class="col-md-4">
-							<p>{{ hasilKlasifikasiDum |safe }}</p>
-						</div>
-						<div class="col-md-4">
-							<p>{{ hasilKlasifikasiTak |safe }}</p>
-						</div>
-						<div class="col-md-4">
-							<p>{{ hasilKlasifikasiSlap |safe }}</p>
-						</div>
-						<div class="col-12 text-center">
-							{{ hasilPresentaseKlasifikasi |safe }}
-						</div>
-					</div>
-				{% endif %}
-					
-
-				
-				{% if text %}
-					<div class="block">
-						<div class="row">
-							{% for t in text %}
-								<col-md-12>
-									{{ t |safe }}
-								</col-md-12>
-							{% endfor %}
-						</div>
-					</div>
-				{% endif %}
-					
-			</div>
-		</div>
-	</div> -->
 
 	{% if hasilPresentaseKlasifikasi %}
 		<section class="service-list section bg-gray">
@@ -126,7 +87,7 @@
 							{% for result in hasilKlasifikasiDum %}
 								<div class="col">
 									<div class="block">
-										<h4>
+										<h4 class="text-center">
 											Result : {{ result }} 
 											{% if result == 'DUM' %}
 												[TRUE]
@@ -135,7 +96,7 @@
 											{% endif %}
 										</h4>
 										<p>
-											<audio controls autoplay>
+											<audio controls>
 												<source src="{% static 'dataset/toneBasic/dum/dum' %}{{ forloop.counter }}.wav" type="audio/wav">
 											</audio>
 										</p>
@@ -151,7 +112,7 @@
 							{% for result in hasilKlasifikasiTak %}
 								<div class="col">
 									<div class="block">
-										<h4>
+										<h4 class="text-center">
 											Result : {{ result }} 
 											{% if result == 'TAK' %}
 												[TRUE]
@@ -160,7 +121,7 @@
 											{% endif %}
 										</h4>
 										<p>
-											<audio controls autoplay>
+											<audio controls>
 												<source src="{% static 'dataset/toneBasic/tak/tak' %}{{ forloop.counter }}.wav" type="audio/wav">
 											</audio>
 										</p>
@@ -176,7 +137,7 @@
 							{% for result in hasilKlasifikasiSlap %}
 								<div class="col">
 									<div class="block">
-										<h4>
+										<h4 class="text-center">
 											Result : {{ result }} 
 											{% if result == 'Slap' %}
 												[TRUE]
@@ -185,7 +146,7 @@
 											{% endif %}
 										</h4>
 										<p>
-											<audio controls autoplay>
+											<audio controls>
 												<source src="{% static 'dataset/toneBasic/slap/slap' %}{{ forloop.counter }}.wav" type="audio/wav">
 											</audio>
 										</p>

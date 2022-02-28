@@ -13,19 +13,11 @@ def basicTone(request):
   context = {
     'title': 'Basic Tone Identification',
     'description': 'Identify the basic hadrah tone (DUM, TAK/KA, SLAP) with Mel Frequency Cepstral Coefficient (MFCC) and K-Nearest Neighbor (KNN) algorithm',
-    'windowLength': 0.02,
-    'frameLength': 0.01,
-    'k': 1,
     'automaticIdentification': 'basicTone',
   }
 
   if request.method == 'POST':
-    if 'basicTone' in request.POST :
-      context['hasilKlasifikasiDum'], context['hasilKlasifikasiTak'], context['hasilKlasifikasiSlap'], context['hasilPresentaseKlasifikasi'] = klasifikasiNada(context['windowLength'], context['frameLength'], 13, context['k'])
-    else :
-      context['windowLength'] = request.POST['windowLength']
-      context['frameLength'] = request.POST['frameLength']
-      context['k'] = request.POST['k']
+    context['hasilKlasifikasiDum'], context['hasilKlasifikasiTak'], context['hasilKlasifikasiSlap'], context['hasilPresentaseKlasifikasi'] = klasifikasiNada(float(request.POST['windowLength']), float(request.POST['frameLength']), 13, int(request.POST['k']))
 
   return render(request, 'identification.html', context)
 

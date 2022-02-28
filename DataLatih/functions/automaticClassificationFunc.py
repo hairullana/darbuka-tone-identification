@@ -47,10 +47,10 @@ def klasifikasiNada(windowLength, frameLength, mfccCoefficients, k):
   
   jumlahKlasifikasiBenar = jumlahKlasifikasiDumBenar + jumlahKlasifikasiTakBenar + jumlahKlasifikasiSlapBenar
 
-  hasilPresentaseKlasifikasi += "Total = " + str(jumlahKlasifikasiBenar) + "/60 (" + str(jumlahKlasifikasiBenar/60*100) + "%)"
+  hasilPresentaseKlasifikasi += "Total = " + str(jumlahKlasifikasiBenar) + "/60 (" + str(jumlahKlasifikasiBenar/60*100) + "%)<br/>"
   hasilPresentaseKlasifikasi += "DUM Tone = " + str(jumlahKlasifikasiDumBenar) + "/20 (" + str(jumlahKlasifikasiDumBenar/20*100) + "%)<br/>"
   hasilPresentaseKlasifikasi += "TAK Tone = " + str(jumlahKlasifikasiTakBenar) + "/20 (" + str(jumlahKlasifikasiTakBenar/20*100) + "%)<br/>"
-  hasilPresentaseKlasifikasi += "SLAP Tone = " + str(jumlahKlasifikasiSlapBenar) + "/20 (" + str(jumlahKlasifikasiSlapBenar/20*100) + "%)<br/>"
+  hasilPresentaseKlasifikasi += "SLAP Tone = " + str(jumlahKlasifikasiSlapBenar) + "/20 (" + str(jumlahKlasifikasiSlapBenar/20*100) + "%)"
 
   return hasilKlasifikasiDum, hasilKlasifikasiTak, hasilKlasifikasiSlap, hasilPresentaseKlasifikasi
 
