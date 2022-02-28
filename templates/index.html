@@ -1,68 +1,8 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html class="no-js">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="description" content="Darbuka Tone Identification">
-  <meta name="author" content="Hairul Lana">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Darbuka Tone Identification</title>
-
-  <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}" />
-  <link rel="stylesheet" href="{% static 'plugins/bootstrap/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="{% static 'plugins/Ionicons/css/ionicons.min.css' %}">
-  <link rel="stylesheet" href="{% static 'plugins/animate-css/animate.css' %}">
-  <link rel="stylesheet" href="{% static 'plugins/magnific-popup/magnific-popup.css' %}">
-  <link rel="stylesheet" href="{% static 'plugins/slick/slick.css' %}">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-
-<body id="body">
-
-  <!-- Header Start -->
-  <header class="navigation">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <!-- header Nav Start -->
-          <nav class="navbar">
-            <div class="container-fluid">
-              <!-- Brand and toggle get grouped for better mobile display -->
-              <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">
-                  <img src="{% static 'images/logo.png' %}" alt="Logo">
-                </a>
-              </div>
-              <!-- Collect the nav links, forms, and other content for toggling -->
-              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                  <li><a href="/">Home</a></li>
-                  <li><a href="#aboutDarbuka">About</a></li>
-                  <li><a href="#darbukaTone">Tone</a></li>
-                  <li><a href="/training">Training Data</a></li>
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Identification <span class="ion-ios-arrow-down"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="/basic-tone">Basic Tone</a></li>
-                      <li><a href="/tone-pattern">Tone Pattern</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-          </nav>
-        </div>
-      </div>
-    </div>
-  </header>
+{% block body %}
 
   <!-- Slider Start -->
   <section class="slider">
@@ -202,8 +142,8 @@
     </div>
   </section>
 
-<!-- Content Start -->
-<!-- <section class="testimonial">
+  <!-- Content Start -->
+  <!-- <section class="testimonial">
     <section class="contact-form">
         <div class="container">
             <div class="row">
@@ -241,84 +181,47 @@
                     </div>
                 </div>
               </form>
-    </section>
+      </section>
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="block">
-          
-          {% if hasilPresentaseKlasifikasi %}
-            <div class="row">
-              <div class="col-md-4">
-                <p>{{ hasilKlasifikasiDum |safe }}</p>
-              </div>
-              <div class="col-md-4">
-                <p>{{ hasilKlasifikasiTak |safe }}</p>
-              </div>
-              <div class="col-md-4">
-                <p>{{ hasilKlasifikasiSlap |safe }}</p>
-              </div>
-              <div class="col-12 text-center">
-                {{ hasilPresentaseKlasifikasi |safe }}
-              </div>
-            </div>
-          {% endif %}
-            
-
+      <div class="row">
+        <div class="col-md-12">
           <div class="block">
-            <div class="row">
+            
+            {% if hasilPresentaseKlasifikasi %}
+              <div class="row">
+                <div class="col-md-4">
+                  <p>{{ hasilKlasifikasiDum |safe }}</p>
+                </div>
+                <div class="col-md-4">
+                  <p>{{ hasilKlasifikasiTak |safe }}</p>
+                </div>
+                <div class="col-md-4">
+                  <p>{{ hasilKlasifikasiSlap |safe }}</p>
+                </div>
+                <div class="col-12 text-center">
+                  {{ hasilPresentaseKlasifikasi |safe }}
+                </div>
+              </div>
+            {% endif %}
               
-              {% for t in text %}
-                
-                <col-md-12>
-                  {{ t |safe }}
-                </col-md-12>
 
-              {% endfor %}
+            <div class="block">
+              <div class="row">
                 
+                {% for t in text %}
+                  
+                  <col-md-12>
+                    {{ t |safe }}
+                  </col-md-12>
+
+                {% endfor %}
+                  
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section> -->
+  </section> -->
 
-  <!-- footer Start -->
-  <footer class="footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <p class="copyright">
-            Copyright 2022 &copy; Developed by <a href="http://github.com/hairullana">Hairul Lana</a><br>
-            <a href="https://themefisher.com/products/airspace-free-bootstrap-website-template/" target="_blank">Airspace Bootstrap Template</a> by <a href="https://themefisher.com/" target="_blank">Themefisher</a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-    <!-- Main jQuery -->
-    <script src="{% static 'plugins/jQuery/jquery.min.js' %}"></script>
-    <!-- Bootstrap 3.1 -->
-    <script src="{% static 'plugins/bootstrap/bootstrap.min.js' %}"></script>
-    <!-- slick Carousel -->
-    <script src="{% static 'plugins/slick/slick.min.js' %}"></script>
-    <script src="{% static 'plugins/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
-    <!-- filter -->
-    <script src="{% static 'plugins/shuffle/shuffle.min.js' %}"></script>
-    <script src="{% static 'plugins/SyoTimer/jquery.syotimer.min.js' %}"></script>
-
-    <!-- Form Validator -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.32/jquery.form.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.min.js"></script>
-
-    <!-- Google Map -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
-    <script src="{% static 'plugins/google-map/map.js' %}"></script>
-
-    <script src="{% static 'js/script.js' %}"></script>
-
-    </body>
-
-    </html>
+{% endblock body %}

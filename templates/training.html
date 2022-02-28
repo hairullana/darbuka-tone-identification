@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+	<!-- jumbotron -->
+	<section class="page-title bg-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="block">
+						<h1>Training Data</h1>
+						<p>Perform extraction using MFCC on the training data then save it into the database.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="row">
+				
+				<h2 class="text-center">Input Parameter</h2>
+				<div class="col-md-5">
+					<img class="img-responsive" src="{% static 'images/wrapper-img.png' %}">
+				</div>
+				<div class="col-md-7">
+					<form class="row contact-form" id="contact-form" style="margin: 0 10px;">
+						<div class="block">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group">
+										<input name="windowLength" type="number" step="0.01" class="form-control" placeholder="Window Length">
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="form-group">
+										<input name="frameLength" type="number" step="0.01" class="form-control" placeholder="Frame Length">
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="form-group">
+										<input name="mfccCoefficient" type="number" class="form-control" placeholder="MFCC Coefficient">
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<button class="btn btn-default" type="submit">Send Message</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+{% endblock body %}
