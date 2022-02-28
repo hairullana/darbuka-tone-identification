@@ -60,7 +60,7 @@
 		</div>
 	</section>
 
-	<div class="row">
+	<!-- <div class="row">
 		<div class="col-md-12">
 			<div class="block">
 				
@@ -97,84 +97,95 @@
 					
 			</div>
 		</div>
-	</div>
+	</div> -->
 
-	<section class="service-arrow">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-4 bg-primary">
-					<div class="block">
-						<i class="ion-erlenmeyer-flask"></i>
-						<h3>Interface Design</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe enim impedit repudiandae omnis est temporibus.</p>
+	{% if hasilPresentaseKlasifikasi %}
+		<section class="service-list section bg-gray">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="section-title text-center">
+							<h2>Result of Darbuka Tone Identification</h2>
+						</div>
 					</div>
 				</div>
-				<div class="col-md-4 bg-primary bg-primary-dark">
-					<div class="block">
-						<i class="ion-leaf"></i>
-						<h3>Product Branding</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe enim impedit repudiandae omnis est temporibus.</p>
-					</div>
-				</div>
-				<div class="col-md-4 bg-primary bg-primary-darker">
-					<div class="block">
-						<i class="ion-lightbulb"></i>
-						<h3>Game Development</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe enim impedit repudiandae omnis est temporibus.</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+				<div class="row">
 
-	<section class="service-list section bg-gray">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="section-title text-center">
-						<h2>What we do best</h2>
+					<div class="col-md-12">
+						<div class="col">
+							<div class="block text-center">
+								<h3><strong>ACCURACY</strong></h3>
+								<p>{{ hasilPresentaseKlasifikasi |safe }}</p>
+							</div>
+						</div>
 					</div>
+					
+					<div class="col-md-4">
+						<div class="row">
+							<h3 class="text-center" style="margin-bottom: 15px;"><strong>DUM Tone</strong></h3>
+							{% for result in hasilKlasifikasiDum %}
+								<div class="col">
+									<div class="block">
+										<h4>
+											Result : {{ result }} 
+											{% if result == 'DUM' %}
+												[TRUE]
+											{% else %}
+												[FALSE]
+											{% endif %}
+										</h4>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="row">
+							<h3 class="text-center" style="margin-bottom: 15px;"><strong>TAK Tone</strong></h3>
+							{% for result in hasilKlasifikasiTak %}
+								<div class="col">
+									<div class="block">
+										<h4>
+											Result : {{ result }} 
+											{% if result == 'TAK' %}
+												[TRUE]
+											{% else %}
+												[FALSE]
+											{% endif %}
+										</h4>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="row">
+							<h3 class="text-center" style="margin-bottom: 15px;"><strong>SLAP Tone</strong></h3>
+							{% for result in hasilKlasifikasiSlap %}
+								<div class="col">
+									<div class="block">
+										<h4>
+											Result : {{ result }} 
+											{% if result == 'Slap' %}
+												[TRUE]
+											{% else %}
+												[FALSE]
+											{% endif %}
+										</h4>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-md-4">
-					<div class="block">
-						<h4>User research</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="block">
-						<h4>Product marketing</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="block">
-						<h4>Visual design</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="block">
-						<h4>Front-end engineering</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="block">
-						<h4>Usability testing & analytics</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="block">
-						<h4>Design sprints & prototyping</h4>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, unde.</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+		</section>
+	{% endif %}
 
 {% endblock body %}
