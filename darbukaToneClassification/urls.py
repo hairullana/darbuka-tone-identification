@@ -6,5 +6,5 @@ urlpatterns = [
     path('', views.index),
     path('admin/', admin.site.urls),
     path('training/', views.training),
-    path('basic-tone/', views.basicTone),
+    path('identification/', views.identification),
 ]

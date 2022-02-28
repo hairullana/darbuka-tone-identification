@@ -9,7 +9,7 @@ def index(request):
 def training(request):
   return render(request, 'training.html')
 
-def basicTone(request):
+def identification(request):
   context = {
     'windowLength': 0.02,
     'frameLength': 0.01,
@@ -20,7 +20,7 @@ def basicTone(request):
     context['windowLength'] = request.POST['windowLength']
     context['frameLength'] = request.POST['frameLength']
     context['k'] = request.POST['k']
-    
+
     if 'basicTone' in request.POST :
       context['hasilKlasifikasiDum'], context['hasilKlasifikasiTak'], context['hasilKlasifikasiSlap'], context['hasilPresentaseKlasifikasi'] = klasifikasiNada(float(request.POST['windowLength']), float(request.POST['frameLength']), 13, int(request.POST['k']))
     elif 'tonePattern' in request.POST :
