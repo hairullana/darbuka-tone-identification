@@ -1,9 +1,9 @@
 import os
 from django.shortcuts import render
-from DataLatih.functions.automaticClassificationFunc import basicToneAutomaticIdentification, tonePatternAutomaticIdentification
+from darbukaToneIdentification.functions.automaticClassificationFunc import basicToneAutomaticIdentification, tonePatternAutomaticIdentification
 from django.core.files.storage import FileSystemStorage
-from DataLatih.functions.classificationFunc import basicToneIdentification, tonePatternIdentification
-from DataLatih.functions.trainingDataFunc import trainingData
+from darbukaToneIdentification.functions.classificationFunc import basicToneIdentification, tonePatternIdentification
+from darbukaToneIdentification.functions.trainingDataFunc import trainingData
 
 
 def index(request):

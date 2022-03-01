@@ -2,24 +2,24 @@ import os
 import math
 import numpy as np
 from . import mfccFunc
-from ..models import DataLatih
+from dataset.models import dataset
 import librosa
 from pydub import AudioSegment
 
 # COLLECTING TRAINING DATASET IN DB
-data = DataLatih.objects.all()
+data = dataset.objects.all()
 
 dum = []
 tak = []
 slap = []
 
 for x in data:
-  dataExtraction = x.ekstraksi
-  if x.jenis_nada == 'dum' :
+  dataExtraction = x.extraction
+  if x.tone == 'dum' :
     dum.append(np.fromstring(dataExtraction.strip('[]'),count=13, dtype=float, sep=' '))
-  elif x.jenis_nada == 'tak' :
+  elif x.tone == 'tak' :
     tak.append(np.fromstring(dataExtraction.strip('[]'),count=13, dtype=float, sep=' '))
-  elif x.jenis_nada == 'slap' :
+  elif x.tone == 'slap' :
     slap.append(np.fromstring(dataExtraction.strip('[]'),count=13, dtype=float, sep=' '))
 
 # CLASSIFICATION
@@ -64,6 +64,7 @@ def basicToneIdentification(filename, k, windowLength, frameLength, mfccTotalFea
   k_dum = 0
   k_tak = 0
   k_slap = 0
+  
   for i in range(len(indeks)) :
     if indeks[i] < 50 :
       k_dum += 1
@@ -86,7 +87,10 @@ def basicToneIdentification(filename, k, windowLength, frameLength, mfccTotalFea
     result = 'TAK / SLAP'
   else :
     result = 'DUM / TAK / SLAP'
-      
+  
+  # print(k_dum)
+  # print(k_tak)
+  # print(k_slap)
   return result
 
 def tonePatternIdentification(filename, k, windowLength, frameLength, mfccCoefficient):

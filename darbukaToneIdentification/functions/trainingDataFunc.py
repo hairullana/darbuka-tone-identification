@@ -1,5 +1,5 @@
 from django.db import connection
-from DataLatih.functions.mfccFunc import mfcc_extract
+from darbukaToneIdentification.functions.mfccFunc import mfcc_extract
 import numpy as np
 
 def trainingData(windowLength, frameLength, mfccCoefficient):
@@ -7,14 +7,14 @@ def trainingData(windowLength, frameLength, mfccCoefficient):
   with connection.cursor() as cursor:
 
     # DELETE ALL DATA
-    cursor.execute("DELETE FROM data_latih")
+    cursor.execute("DELETE FROM dataset")
     connection.commit()
-    cursor.execute("ALTER TABLE data_latih AUTO_INCREMENT = 0")
+    cursor.execute("ALTER TABLE dataset AUTO_INCREMENT = 0")
     connection.commit()
 
     def saveToDatabase(tone,mfcc):
       # QUERY AND PUSH
-      cursor.execute("INSERT INTO data_latih(id, jenis_nada, ekstraksi) VALUES('','" + str(tone) + "','" + str(mfcc) + "')")
+      cursor.execute("INSERT INTO dataset(id, tone, extraction) VALUES('','" + str(tone) + "','" + str(mfcc) + "')")
       connection.commit()
     
     # testing dataset
