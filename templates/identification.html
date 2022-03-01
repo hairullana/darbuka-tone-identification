@@ -309,6 +309,36 @@
 			</div>
 		</section>
 	{% endif %}
+
+	{% if result %}
+		<section class="service-list section bg-gray" id="result">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="section-title text-center">
+							<h2>Result of Darbuka Basic Tone Identification</h2>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="col-md-12">
+						<div class="col">
+							<div class="block text-center">
+								<h3>Result: <strong>{{ result }}</strong></h3>
+								<p>
+									<audio controls>
+									<source src="{{ filename }}" type="audio/wav">
+								</audio>
+							</p>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	{% endif %}
 		
 
 {% endblock body %}
