@@ -1,7 +1,7 @@
-from unittest import result
 from . import classificationFunc
 from pydub import AudioSegment
 import librosa
+import os
 
 def klasifikasiNada(windowLength, frameLength, mfccCoefficients, k):
 
@@ -173,7 +173,8 @@ def klasifikasiNadaDasar(windowLength, frameLength, mfccCoefficients, k):
         hasilKlasifikasiSayyidi.append(resultDetect)
       
       
-  
+  os.remove('temp.wav')
+
   hasilPresentaseKlasifikasi += "Total = " + str(jumlahKlasifikasiDumBenar + jumlahKlasifikasiTakBenar + jumlahKlasifikasiSlapBenar) + "/" + str(totalDum + totalTak + totalSlap) + " (" + str("{:.2f}".format((jumlahKlasifikasiDumBenar + jumlahKlasifikasiTakBenar + jumlahKlasifikasiSlapBenar)/150*100)) + "%)<br/>"
   hasilPresentaseKlasifikasi += "DUM Tone = " + str(jumlahKlasifikasiDumBenar) + "/" + str(totalDum) + " (" + str("{:.2f}".format(jumlahKlasifikasiDumBenar/totalDum*100)) + "%)<br/>"
   hasilPresentaseKlasifikasi += "TAK Tone = " + str(jumlahKlasifikasiTakBenar) + "/" + str(totalTak) + " (" + str("{:.2f}".format(jumlahKlasifikasiTakBenar/totalTak*100)) + "%)<br/>"

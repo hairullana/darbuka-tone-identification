@@ -310,7 +310,7 @@
 		</section>
 	{% endif %}
 
-	{% if result %}
+	{% if resultBasicTone %}
 		<section class="service-list section bg-gray" id="result">
 			<div class="container">
 				<div class="row">
@@ -325,12 +325,13 @@
 					<div class="col-md-12">
 						<div class="col">
 							<div class="block text-center">
-								<h3>Result: <strong>{{ result }}</strong></h3>
-								<p>
+								<h3>Result of <em>{{ filename }}</em></h3>
+								<h3><strong>{{ resultBasicTone }}</strong></h3>
+								<h3>
 									<audio controls>
-									<source src="{{ filename }}" type="audio/wav">
+									<source src="{{ fileLocation }}" type="audio/wav">
 								</audio>
-							</p>
+							</h3>
 							</div>
 						</div>
 					</div>
@@ -339,6 +340,39 @@
 			</div>
 		</section>
 	{% endif %}
+
+	{% if resultTonePattern %}
+		<section class="service-list section bg-gray" id="result">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="section-title text-center">
+							<h2>Result of Darbuka Tone Pattern Identification</h2>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="col-md-12">
+						<div class="col">
+							<div class="block text-center">
+								<h3>Result of <em>{{ filename }}</em></h3>
+								<h3><strong>{{ resultTonePattern}}</strong></h3>
+								<h3>
+									<audio controls>
+									<source src="{{ fileLocation }}" type="audio/wav">
+								</audio>
+							</h3>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	{% endif %}
+
+	
 		
 
 {% endblock body %}

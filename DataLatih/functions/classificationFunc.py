@@ -2,6 +2,8 @@ import math
 import numpy as np
 from . import mfccFunc
 from ..models import DataLatih
+import librosa
+from pydub import AudioSegment
 
 # COLLECTING TRAINING DATASET IN DB
 data = DataLatih.objects.all()
@@ -85,3 +87,23 @@ def klasifikasi(filename, k, windowLength, frameLength, mfccTotalFeature) :
     hasil = 'DUM / TAK / SLAP'
       
   return hasil, k_dum, k_tak, k_slap, indeks
+
+def tonePatternIdentification(filename, k, windowLength, frameLength, mfccCoefficients):
+  x, sr = librosa.load(filename)
+  onsetDetection = librosa.onset.onset_detect(x, sr=sr, units='time')
+  toneDetect = []
+
+  j=1
+  for onset in onsetDetection:
+    newAudio = AudioSegment.from_wav(filename)
+    start = int(onset*1000)
+    if j != len(onsetDetection) :
+        end = int(onsetDetection[j]*1000)
+    else :
+        end = int(librosa.get_duration(filename=filename)*1000)
+    newAudio = newAudio[start:end]
+    newAudio.export('temp.wav', format="wav")
+    hasil, k_dum, k_tak, k_slap, indeks = klasifikasi('temp.wav', k, windowLength, frameLength, mfccCoefficients)
+    toneDetect.append(hasil)
+
+  return toneDetect
