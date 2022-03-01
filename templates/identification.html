@@ -74,7 +74,7 @@
 		</div>
 	</section>
 
-	{% if hasilKlasifikasiDum %}
+	{% if dumResult %}
 		<section class="service-list section bg-gray" id="result">
 			<div class="container">
 				<div class="row">
@@ -90,7 +90,7 @@
 						<div class="col">
 							<div class="block text-center">
 								<h3><strong>ACCURACY</strong></h3>
-								<p>{{ hasilPresentaseKlasifikasi |safe }}</p>
+								<p>{{ accuracyResult |safe }}</p>
 							</div>
 						</div>
 					</div>
@@ -98,7 +98,7 @@
 					<div class="col-md-4">
 						<div class="row">
 							<h3 class="text-center" style="margin-bottom: 15px;"><strong>DUM TONE</strong></h3>
-							{% for result in hasilKlasifikasiDum %}
+							{% for result in dumResult %}
 								<div class="col">
 									<div class="block">
 										<h4 class="text-center">
@@ -123,7 +123,7 @@
 					<div class="col-md-4">
 						<div class="row">
 							<h3 class="text-center" style="margin-bottom: 15px;"><strong>TAK TONE</strong></h3>
-							{% for result in hasilKlasifikasiTak %}
+							{% for result in takResult %}
 								<div class="col">
 									<div class="block">
 										<h4 class="text-center">
@@ -148,7 +148,7 @@
 					<div class="col-md-4">
 						<div class="row">
 							<h3 class="text-center" style="margin-bottom: 15px;"><strong>SLAP TONE</strong></h3>
-							{% for result in hasilKlasifikasiSlap %}
+							{% for result in slapResult %}
 								<div class="col">
 									<div class="block">
 										<h4 class="text-center">
@@ -176,7 +176,7 @@
 	{% endif %}
 
 	
-	{% if hasilKlasifikasiBaladi %}
+	{% if baladiResult %}
 		<section class="service-list section bg-gray" id="result">
 			<div class="container">
 				<div class="row">
@@ -192,7 +192,7 @@
 						<div class="col">
 							<div class="block text-center">
 								<h3><strong>ACCURACY</strong></h3>
-								<p>{{ hasilPresentaseKlasifikasi |safe }}</p>
+								<p>{{ accuracyResult |safe }}</p>
 							</div>
 						</div>
 					</div>
@@ -205,7 +205,7 @@
 									DUM - DUM - TAK - DUM - TAK
 								</strong>
 							</h3>
-							{% for result in hasilKlasifikasiBaladi %}
+							{% for result in baladiResult %}
 								<div class="col">
 									<div class="block">
 										<h4 class="text-center">
@@ -241,7 +241,7 @@
 									DUM - TAK - TAK - DUM - TAK
 								</strong>
 							</h3>
-							{% for result in hasilKlasifikasiMaqsum %}
+							{% for result in maqsumResult %}
 								<div class="col">
 									<div class="block">
 										<h4 class="text-center">
@@ -277,7 +277,7 @@
 									DUM - TAK - DUM - DUM - TAK
 								</strong>
 							</h3>
-							{% for result in hasilKlasifikasiSayyidi %}
+							{% for result in sayyidiResult %}
 								<div class="col">
 									<div class="block">
 										<h4 class="text-center">

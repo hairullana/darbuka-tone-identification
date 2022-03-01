@@ -14,16 +14,16 @@ tak = []
 slap = []
 
 for x in data:
-  dataEkstraksi = x.ekstraksi
+  dataExtraction = x.ekstraksi
   if x.jenis_nada == 'dum' :
-    dum.append(np.fromstring(dataEkstraksi.strip('[]'),count=13, dtype=float, sep=' '))
+    dum.append(np.fromstring(dataExtraction.strip('[]'),count=13, dtype=float, sep=' '))
   elif x.jenis_nada == 'tak' :
-    tak.append(np.fromstring(dataEkstraksi.strip('[]'),count=13, dtype=float, sep=' '))
+    tak.append(np.fromstring(dataExtraction.strip('[]'),count=13, dtype=float, sep=' '))
   elif x.jenis_nada == 'slap' :
-    slap.append(np.fromstring(dataEkstraksi.strip('[]'),count=13, dtype=float, sep=' '))
+    slap.append(np.fromstring(dataExtraction.strip('[]'),count=13, dtype=float, sep=' '))
 
 # CLASSIFICATION
-def klasifikasi(filename, k, windowLength, frameLength, mfccTotalFeature) :
+def basicToneIdentification(filename, k, windowLength, frameLength, mfccTotalFeature) :
   # MFCC
   testing = mfccFunc.mfcc_extract(filename, windowLength, frameLength, mfccTotalFeature)
   # MEAN OF EACH COEFFICIENT
@@ -73,21 +73,21 @@ def klasifikasi(filename, k, windowLength, frameLength, mfccTotalFeature) :
       k_slap += 1
 
   if k_dum > k_tak and k_dum > k_slap :
-    hasil = 'DUM'
+    result = 'DUM'
   elif k_tak > k_dum and k_tak > k_slap :
-    hasil = 'TAK'
+    result = 'TAK'
   elif k_slap > k_dum and k_slap > k_tak :
-    hasil = 'SLAP'
+    result = 'SLAP'
   elif k_dum == k_tak :
-    hasil = 'DUM / TAK'
+    result = 'DUM / TAK'
   elif k_dum == k_slap :
-    hasil = 'DUM / SLAP'
+    result = 'DUM / SLAP'
   elif k_tak == k_slap :
-    hasil = 'TAK / SLAP'
+    result = 'TAK / SLAP'
   else :
-    hasil = 'DUM / TAK / SLAP'
+    result = 'DUM / TAK / SLAP'
       
-  return hasil, k_dum, k_tak, k_slap, indeks
+  return result
 
 def tonePatternIdentification(filename, k, windowLength, frameLength, mfccCoefficients):
   x, sr = librosa.load(filename)
@@ -104,8 +104,8 @@ def tonePatternIdentification(filename, k, windowLength, frameLength, mfccCoeffi
         end = int(librosa.get_duration(filename=filename)*1000)
     newAudio = newAudio[start:end]
     newAudio.export('temp.wav', format="wav")
-    hasil, k_dum, k_tak, k_slap, indeks = klasifikasi('temp.wav', k, windowLength, frameLength, mfccCoefficients)
-    toneDetect.append(hasil)
+    result = basicToneIdentification('temp.wav', k, windowLength, frameLength, mfccCoefficients)
+    toneDetect.append(result)
 
   os.remove('temp.wav')
   return toneDetect

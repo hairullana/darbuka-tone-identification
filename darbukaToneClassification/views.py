@@ -1,8 +1,8 @@
 import os
 from django.shortcuts import render
-from DataLatih.functions.automaticClassificationFunc import klasifikasiNada, klasifikasiNadaDasar
+from DataLatih.functions.automaticClassificationFunc import basicToneAutomaticIdentification, tonePatternAutomaticIdentification
 from django.core.files.storage import FileSystemStorage
-from DataLatih.functions.classificationFunc import klasifikasi, tonePatternIdentification
+from DataLatih.functions.classificationFunc import basicToneIdentification, tonePatternIdentification
 
 
 def index(request):
@@ -24,9 +24,9 @@ def identification(request):
     context['k'] = request.POST['k']
 
     if 'basicToneAutomatic' in request.POST :
-      context['hasilKlasifikasiDum'], context['hasilKlasifikasiTak'], context['hasilKlasifikasiSlap'], context['hasilPresentaseKlasifikasi'] = klasifikasiNada(float(request.POST['windowLength']), float(request.POST['frameLength']), 13, int(request.POST['k']))
+      context['dumResult'], context['takResult'], context['slapResult'], context['accuracyResult'] = basicToneAutomaticIdentification(float(request.POST['windowLength']), float(request.POST['frameLength']), 13, int(request.POST['k']))
     elif 'tonePatternAutomatic' in request.POST :
-      context['hasilKlasifikasiBaladi'], context['hasilKlasifikasiMaqsum'], context['hasilKlasifikasiSayyidi'], context['hasilPresentaseKlasifikasi'] = klasifikasiNadaDasar(float(request.POST['windowLength']), float(request.POST['frameLength']), 13, int(request.POST['k']))
+      context['baladiResult'], context['maqsumResult'], context['sayyidiResult'], context['accuracyResult'] = tonePatternAutomaticIdentification(float(request.POST['windowLength']), float(request.POST['frameLength']), 13, int(request.POST['k']))
     elif 'basicTone' in request.POST and request.FILES:
       dir = 'media'
       for f in os.listdir(dir):
@@ -35,9 +35,9 @@ def identification(request):
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      hasil, k_dum, k_tak, k_slap, indeks = klasifikasi('media/temp.wav', int(request.POST['k']), float(request.POST['windowLength']), float(request.POST['frameLength']), 13)
+      result = basicToneIdentification('media/temp.wav', int(request.POST['k']), float(request.POST['windowLength']), float(request.POST['frameLength']), 13)
 
-      context['resultBasicTone'] = hasil
+      context['resultBasicTone'] = result
       context['fileLocation'] = '/media/temp.wav'
       context['filename'] = inputFile.name
     elif 'tonePattern' in request.POST and request.FILES:
@@ -48,9 +48,9 @@ def identification(request):
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      hasil = tonePatternIdentification('media/temp.wav', int(request.POST['k']), float(request.POST['windowLength']), float(request.POST['frameLength']), 13)
+      result = tonePatternIdentification('media/temp.wav', int(request.POST['k']), float(request.POST['windowLength']), float(request.POST['frameLength']), 13)
 
-      context['resultTonePattern'] = hasil
+      context['resultTonePattern'] = result
       context['fileLocation'] = '/media/temp.wav'
       context['filename'] = inputFile.name
 

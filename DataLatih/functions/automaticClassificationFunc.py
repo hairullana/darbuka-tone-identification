@@ -3,67 +3,60 @@ from pydub import AudioSegment
 import librosa
 import os
 
-def klasifikasiNada(windowLength, frameLength, mfccCoefficients, k):
-
-  hasilKlasifikasiDum = []
-  hasilKlasifikasiTak = []
-  hasilKlasifikasiSlap = []
-  jumlahKlasifikasiDumBenar = 0
-  jumlahKlasifikasiTakBenar = 0
-  jumlahKlasifikasiSlapBenar = 0
-  hasilPresentaseKlasifikasi = ""
+def basicToneAutomaticIdentification(windowLength, frameLength, mfccCoefficients, k):
+  dumResult = []
+  takResult = []
+  slapResult = []
+  totalTrueDum = 0
+  totalTrueTak = 0
+  totalTrueSlap = 0
+  accuracyResult = ""
 
   # TESTING DUM
   for i in range(20) :
     indeks = i + 51
     filename = 'static/dataset/toneBasic/dum/dum' + str(indeks) + '.wav'
-    hasil, k_dum, k_tak, k_slap, indeks = classificationFunc.klasifikasi(filename, k, windowLength, frameLength, mfccCoefficients)
-    file = filename.split(sep="/")
-    file2 = file[len(file)-1]
-    if hasil == 'DUM':
-      jumlahKlasifikasiDumBenar += 1
-    hasilKlasifikasiDum.append(hasil)
+    result = classificationFunc.basicToneIdentification(filename, k, windowLength, frameLength, mfccCoefficients)
+    if result == 'DUM':
+      totalTrueDum += 1
+    dumResult.append(result)
 
   # TESTING TAK
   for i in range(20) :
     indeks = i + 51
     filename = 'static/dataset/toneBasic/tak/tak' + str(indeks) + '.wav'
-    hasil, k_dum, k_tak, k_slap, indeks = classificationFunc.klasifikasi(filename, k, windowLength, frameLength, mfccCoefficients)
-    file = filename.split(sep="/")
-    file2 = file[len(file)-1]
-    if hasil == 'TAK':
-      jumlahKlasifikasiTakBenar += 1
-    hasilKlasifikasiTak.append(hasil)
+    result = classificationFunc.basicToneIdentification(filename, k, windowLength, frameLength, mfccCoefficients)
+    if result == 'TAK':
+      totalTrueTak += 1
+    takResult.append(result)
 
   # TESTING SLAP
   for i in range(20) :
     indeks = i + 51
     filename = 'static/dataset/toneBasic/slap/slap' + str(indeks) + '.wav'
-    hasil, k_dum, k_tak, k_slap, indeks = classificationFunc.klasifikasi(filename, k, windowLength, frameLength, mfccCoefficients)
-    file = filename.split(sep="/")
-    file2 = file[len(file)-1]
-    if hasil == 'SLAP':
-      jumlahKlasifikasiSlapBenar += 1
-    hasilKlasifikasiSlap.append(hasil)
+    result = classificationFunc.basicToneIdentification(filename, k, windowLength, frameLength, mfccCoefficients)
+    if result == 'SLAP':
+      totalTrueSlap += 1
+    slapResult.append(result)
   
-  jumlahKlasifikasiBenar = jumlahKlasifikasiDumBenar + jumlahKlasifikasiTakBenar + jumlahKlasifikasiSlapBenar
+  totalTrue = totalTrueDum + totalTrueTak + totalTrueSlap
 
-  hasilPresentaseKlasifikasi += "Total = " + str(jumlahKlasifikasiBenar) + "/60 (" + str("{:.2f}".format(jumlahKlasifikasiBenar/60*100)) + "%)<br/>"
-  hasilPresentaseKlasifikasi += "DUM Tone = " + str(jumlahKlasifikasiDumBenar) + "/20 (" + str("{:.2f}".format(jumlahKlasifikasiDumBenar/20*100)) + "%)<br/>"
-  hasilPresentaseKlasifikasi += "TAK Tone = " + str(jumlahKlasifikasiTakBenar) + "/20 (" + str("{:.2f}".format(jumlahKlasifikasiTakBenar/20*100)) + "%)<br/>"
-  hasilPresentaseKlasifikasi += "SLAP Tone = " + str(jumlahKlasifikasiSlapBenar) + "/20 (" + str("{:.2f}".format(jumlahKlasifikasiSlapBenar/20*100)) + "%)"
+  accuracyResult += "Total = " + str(totalTrue) + "/60 (" + str("{:.2f}".format(totalTrue/60*100)) + "%)<br/>"
+  accuracyResult += "DUM Tone = " + str(totalTrueDum) + "/20 (" + str("{:.2f}".format(totalTrueDum/20*100)) + "%)<br/>"
+  accuracyResult += "TAK Tone = " + str(totalTrueTak) + "/20 (" + str("{:.2f}".format(totalTrueTak/20*100)) + "%)<br/>"
+  accuracyResult += "SLAP Tone = " + str(totalTrueSlap) + "/20 (" + str("{:.2f}".format(totalTrueSlap/20*100)) + "%)"
 
-  return hasilKlasifikasiDum, hasilKlasifikasiTak, hasilKlasifikasiSlap, hasilPresentaseKlasifikasi
+  return dumResult, takResult, slapResult, accuracyResult
 
 
-def klasifikasiNadaDasar(windowLength, frameLength, mfccCoefficients, k):
-  hasilKlasifikasiBaladi = []
-  hasilKlasifikasiMaqsum = []
-  hasilKlasifikasiSayyidi = []
-  jumlahKlasifikasiDumBenar = 0
-  jumlahKlasifikasiTakBenar = 0
-  jumlahKlasifikasiSlapBenar = 0
-  hasilPresentaseKlasifikasi = ""
+def tonePatternAutomaticIdentification(windowLength, frameLength, mfccCoefficients, k):
+  baladiResult = []
+  maqsumResult = []
+  sayyidiResult = []
+  totalTrueDum = 0
+  totalTrueTak = 0
+  totalTrueSlap = 0
+  accuracyResult = ""
 
   totalDum = 0
   totalTak = 0
@@ -117,44 +110,44 @@ def klasifikasiNadaDasar(windowLength, frameLength, mfccCoefficients, k):
             end = int(librosa.get_duration(filename=filename)*1000)
         newAudio = newAudio[start:end]
         newAudio.export('temp.wav', format="wav")
-        hasil, k_dum, k_tak, k_slap, indeks = classificationFunc.klasifikasi('temp.wav', k, windowLength, frameLength, mfccCoefficients)
+        result = classificationFunc.basicToneIdentification('temp.wav', k, windowLength, frameLength, mfccCoefficients)
         if j != len(onsetDetection):
-          temp += hasil.lower() + '-'
+          temp += result.lower() + '-'
         else :
-          temp += hasil.lower()
+          temp += result.lower()
         
         if j <= 5 :
           if tonePattern == 'baladi' :
-            if hasil == baladiTonePattern[j-1] :
+            if result == baladiTonePattern[j-1] :
               toneDetect.append(True)
-              if hasil == 'DUM' :
-                jumlahKlasifikasiDumBenar += 1
-              elif hasil == 'TAK' :
-                jumlahKlasifikasiTakBenar += 1
-              elif hasil == 'SLAP' :
-                jumlahKlasifikasiSlapBenar += 1
+              if result == 'DUM' :
+                totalTrueDum += 1
+              elif result == 'TAK' :
+                totalTrueTak += 1
+              elif result == 'SLAP' :
+                totalTrueSlap += 1
             else :
               toneDetect.append(False)
           elif tonePattern == 'maqsum' :
-            if hasil == maqsumTonePattern[j-1] :
+            if result == maqsumTonePattern[j-1] :
               toneDetect.append(True)
-              if hasil == 'DUM' :
-                jumlahKlasifikasiDumBenar += 1
-              elif hasil == 'TAK' :
-                jumlahKlasifikasiTakBenar += 1
-              elif hasil == 'SLAP' :
-                jumlahKlasifikasiSlapBenar += 1
+              if result == 'DUM' :
+                totalTrueDum += 1
+              elif result == 'TAK' :
+                totalTrueTak += 1
+              elif result == 'SLAP' :
+                totalTrueSlap += 1
             else :
               toneDetect.append(False)
           elif tonePattern == 'sayyidi' :
-            if hasil == sayyidiTonePattern[j-1] :
+            if result == sayyidiTonePattern[j-1] :
               toneDetect.append(True)
-              if hasil == 'DUM' :
-                jumlahKlasifikasiDumBenar += 1
-              elif hasil == 'TAK' :
-                jumlahKlasifikasiTakBenar += 1
-              elif hasil == 'SLAP' :
-                jumlahKlasifikasiSlapBenar += 1
+              if result == 'DUM' :
+                totalTrueDum += 1
+              elif result == 'TAK' :
+                totalTrueTak += 1
+              elif result == 'SLAP' :
+                totalTrueSlap += 1
             else :
               toneDetect.append(False)
         else :
@@ -166,19 +159,19 @@ def klasifikasiNadaDasar(windowLength, frameLength, mfccCoefficients, k):
       resultDetect.append(toneDetect)
 
       if tonePattern == 'baladi' :
-        hasilKlasifikasiBaladi.append(resultDetect)
+        baladiResult.append(resultDetect)
       elif tonePattern == 'maqsum' :
-        hasilKlasifikasiMaqsum.append(resultDetect)
+        maqsumResult.append(resultDetect)
       elif tonePattern == 'sayyidi' :
-        hasilKlasifikasiSayyidi.append(resultDetect)
+        sayyidiResult.append(resultDetect)
       
       
   os.remove('temp.wav')
 
-  hasilPresentaseKlasifikasi += "Total = " + str(jumlahKlasifikasiDumBenar + jumlahKlasifikasiTakBenar + jumlahKlasifikasiSlapBenar) + "/" + str(totalDum + totalTak + totalSlap) + " (" + str("{:.2f}".format((jumlahKlasifikasiDumBenar + jumlahKlasifikasiTakBenar + jumlahKlasifikasiSlapBenar)/150*100)) + "%)<br/>"
-  hasilPresentaseKlasifikasi += "DUM Tone = " + str(jumlahKlasifikasiDumBenar) + "/" + str(totalDum) + " (" + str("{:.2f}".format(jumlahKlasifikasiDumBenar/totalDum*100)) + "%)<br/>"
-  hasilPresentaseKlasifikasi += "TAK Tone = " + str(jumlahKlasifikasiTakBenar) + "/" + str(totalTak) + " (" + str("{:.2f}".format(jumlahKlasifikasiTakBenar/totalTak*100)) + "%)<br/>"
+  accuracyResult += "Total = " + str(totalTrueDum + totalTrueTak + totalTrueSlap) + "/" + str(totalDum + totalTak + totalSlap) + " (" + str("{:.2f}".format((totalTrueDum + totalTrueTak + totalTrueSlap)/150*100)) + "%)<br/>"
+  accuracyResult += "DUM Tone = " + str(totalTrueDum) + "/" + str(totalDum) + " (" + str("{:.2f}".format(totalTrueDum/totalDum*100)) + "%)<br/>"
+  accuracyResult += "TAK Tone = " + str(totalTrueTak) + "/" + str(totalTak) + " (" + str("{:.2f}".format(totalTrueTak/totalTak*100)) + "%)<br/>"
   if totalSlap != 0:
-    hasilPresentaseKlasifikasi += "SLAP Tone = " + str(jumlahKlasifikasiSlapBenar) + "/" + str(totalSlap) + " (" + str("{:.2f}".format(jumlahKlasifikasiSlapBenar/totalSlap*100)) + "%)"
+    accuracyResult += "SLAP Tone = " + str(totalTrueSlap) + "/" + str(totalSlap) + " (" + str("{:.2f}".format(totalTrueSlap/totalSlap*100)) + "%)"
 
-  return hasilKlasifikasiBaladi, hasilKlasifikasiMaqsum, hasilKlasifikasiSayyidi, hasilPresentaseKlasifikasi
+  return baladiResult, maqsumResult, sayyidiResult, accuracyResult
