@@ -25,37 +25,46 @@
 		<div class="container">
 			<div class="row">
 				<h2 class="text-center">Input Parameter</h2>
-				<div class="col-md-6">
-					<img class="img-responsive" src="{% static 'images/wrapper-img.png' %}">
-				</div>
-				<div class="col-md-6">
-					<form class="row contact-form" id="contact-form" style="margin: 0 10px;" method="post" action="#result">
+				<div class="col-md-12">
+					<form enctype="multipart/form-data" class="row contact-form" id="contact-form" style="margin: 0 10px;" method="post" action="#result">
 						{% csrf_token %}
 						<div class="block">
 							<div class="row">
-								<div class="col-sm-12">
+								<div class="col-sm-3">
 									<div class="form-group">
 										<label for="windowLength">Window Length ({{ windowLength }})</label>
 										<input id="windowLength" name="windowLength" type="number" step="0.001" value="{{ windowLength }}" class="form-control" placeholder="Window Length">
 									</div>
 								</div>
-								<div class="col-sm-12">
+								<div class="col-sm-3">
 									<div class="form-group">
 										<label for="frameLength">Frame Length ({{ frameLength }})</label>
 										<input id="frameLength" name="frameLength" type="number" step="0.001" value="{{ frameLength }}" class="form-control" placeholder="Frame Length">
 									</div>
 								</div>
-								<div class="col-sm-12">
+								<div class="col-sm-3">
 									<div class="form-group">
 										<label for="k">K ({{ k }})</label>
 										<input id="k" name="k" type="number" value="{{ k }}" class="form-control" placeholder="K">
 									</div>
 								</div>
+								<div class="col-sm-3">
+									<div class="form-group">
+										<label for="inputFile">Input File WAV <em>(optional)</em></label>
+										<input id="inputFile" name="inputFile" type="file" class="form-control" placeholder="K">
+									</div>
+								</div>
 							</div>
-							<div class="col-sm-6">
+							<div class="col-sm-3 mt-10">
+								<button class="btn btn-default" name="basicToneAutomatic" type="submit">Basic Tone (Automatic)</button>
+							</div>
+							<div class="col-sm-3 mt-10">
+								<button class="btn btn-default" name="tonePatternAutomatic" type="submit">Tone Pattern (Automatic)</button>
+							</div>
+							<div class="col-sm-3 mt-10">
 								<button class="btn btn-default" name="basicTone" type="submit">Basic Tone</button>
 							</div>
-							<div class="col-sm-6">
+							<div class="col-sm-3 mt-10">
 								<button class="btn btn-default" name="tonePattern" type="submit">Tone Pattern</button>
 							</div>
 						</div>
