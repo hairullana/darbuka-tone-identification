@@ -1,3 +1,4 @@
+import os
 import math
 import numpy as np
 from . import mfccFunc
@@ -106,4 +107,5 @@ def tonePatternIdentification(filename, k, windowLength, frameLength, mfccCoeffi
     hasil, k_dum, k_tak, k_slap, indeks = klasifikasi('temp.wav', k, windowLength, frameLength, mfccCoefficients)
     toneDetect.append(hasil)
 
+  os.remove('temp.wav')
   return toneDetect
