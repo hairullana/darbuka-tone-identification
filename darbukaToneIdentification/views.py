@@ -38,30 +38,30 @@ def identification(request):
     elif 'tonePatternAutomatic' in request.POST :
       context['baladiResult'], context['maqsumResult'], context['sayyidiResult'], context['accuracyResult'] = tonePatternAutomaticIdentification(float(request.POST['windowLength']), float(request.POST['frameLength']), 13, int(request.POST['k']))
     elif 'basicTone' in request.POST and request.FILES:
-      dir = 'media'
+      dir = 'temp'
       for f in os.listdir(dir):
           os.remove(os.path.join(dir, f))
       inputFile = request.FILES['inputFile']
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      result = basicToneIdentification('media/temp.wav', int(request.POST['k']), float(request.POST['windowLength']), float(request.POST['frameLength']), 13)
+      result = basicToneIdentification('temp/temp.wav', int(request.POST['k']), float(request.POST['windowLength']), float(request.POST['frameLength']), 13)
 
       context['resultBasicTone'] = result
-      context['fileLocation'] = '/media/temp.wav'
+      context['fileLocation'] = '/temp/temp.wav'
       context['filename'] = inputFile.name
     elif 'tonePattern' in request.POST and request.FILES:
-      dir = 'media'
+      dir = 'temp'
       for f in os.listdir(dir):
           os.remove(os.path.join(dir, f))
       inputFile = request.FILES['inputFile']
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      result = tonePatternIdentification('media/temp.wav', int(request.POST['k']), float(request.POST['windowLength']), float(request.POST['frameLength']), 13)
+      result = tonePatternIdentification('temp/temp.wav', int(request.POST['k']), float(request.POST['windowLength']), float(request.POST['frameLength']), 13)
 
       context['resultTonePattern'] = result
-      context['fileLocation'] = '/media/temp.wav'
+      context['fileLocation'] = '/temp/temp.wav'
       context['filename'] = inputFile.name
 
   return render(request, 'identification.html', context)
