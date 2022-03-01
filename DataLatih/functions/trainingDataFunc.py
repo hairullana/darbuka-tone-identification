@@ -1,43 +1,37 @@
-import mysql.connector
-import mfccFunc
+from django.db import connection
+from DataLatih.functions.mfccFunc import mfcc_extract
 import numpy as np
 
-def trainingData(windowLength, frameLength, mfccCoefficients, info):
-  infoText = ""
+def trainingData(windowLength, frameLength, mfccCoefficient):
+  trainingResult = ""
+  with connection.cursor() as cursor:
 
-  # DB CONNECTOR
-  connection = mysql.connector.connect(
-    user='root',
-    password='',
-    host='127.0.0.1',
-    database='darbuka'
-  )
-  cursor = connection.cursor()
-
-  # QUERY AND PUSH
-  cursor.execute("DELETE FROM data_latih")
-  connection.commit()
-
-  def save_to_db(jenisNada,mfcc):
-    # QUERY AND PUSH
-    cursor.execute("INSERT INTO data_latih VALUES('','" + jenisNada + "','" + mfcc + "')")
+    # DELETE ALL DATA
+    cursor.execute("DELETE FROM data_latih")
     connection.commit()
-  
-  # testing dataset
-  jenisNada = ['dum','tak','slap']
-  jumlahDataLatih = 50
-  
-  # TRAINING
-  for i in jenisNada :
-    for j in range(jumlahDataLatih) :
-      filename = 'DataTA/NadaDasar/' + i + '/' + i + str(j+1) + '.wav'
-      # EXTRACTION
-      mfccResult = mfccFunc.mfcc_extract(filename, windowLength, frameLength, mfccCoefficients)
-      # MEAN OF EACH COEFFICIENT
-      mfccResult2 = np.mean(mfccResult, axis=1)
-      # CONVERT TO STRING
-      mfccResult2 = np.array2string(mfccResult2)
-      # SAVE TO DB
-      save_to_db(i, mfccResult2)
-    infoText += 'Sedang melakukan ekstraksi pada nada' + ' i sebanyak ' + str(jumlahDataLatih) + ' nada ...\n'
-    info.config(text=infoText)
+    cursor.execute("ALTER TABLE data_latih AUTO_INCREMENT = 0")
+    connection.commit()
+
+    def saveToDatabase(tone,mfcc):
+      # QUERY AND PUSH
+      cursor.execute("INSERT INTO data_latih(id, jenis_nada, ekstraksi) VALUES('','" + str(tone) + "','" + str(mfcc) + "')")
+      connection.commit()
+    
+    # testing dataset
+    toneType = ['dum','tak','slap']
+    
+    # TRAINING
+    for i in toneType :
+      for j in range(50) :
+        filename = 'static/dataset/toneBasic/' + i + '/' + i + str(j+1) + '.wav'
+        # EXTRACTION
+        mfccResult = mfcc_extract(filename, windowLength, frameLength, mfccCoefficient)
+        # MEAN OF EACH COEFFICIENT
+        mfccResult = np.mean(mfccResult, axis=1)
+        # CONVERT TO STRING
+        mfccResult = np.array2string(mfccResult)
+        # SAVE TO DB
+        saveToDatabase(i, mfccResult)
+      trainingResult += 'Successful training data on ' + i.upper() + ' tone.<br/>'
+
+  return trainingResult

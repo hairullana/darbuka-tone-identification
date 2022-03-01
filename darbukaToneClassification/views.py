@@ -3,13 +3,23 @@ from django.shortcuts import render
 from DataLatih.functions.automaticClassificationFunc import basicToneAutomaticIdentification, tonePatternAutomaticIdentification
 from django.core.files.storage import FileSystemStorage
 from DataLatih.functions.classificationFunc import basicToneIdentification, tonePatternIdentification
+from DataLatih.functions.trainingDataFunc import trainingData
 
 
 def index(request):
   return render(request, 'index.html')
 
 def training(request):
-  return render(request, 'training.html')
+  context = {
+    'windowLength': 0.02,
+    'frameLength': 0.01,
+    'mfccCoefficient': 13,
+  }
+
+  if 'trainingData' in request.POST:
+    context['trainingResult'] = trainingData(float(request.POST['windowLength']), float(request.POST['frameLength']), int(request.POST['mfccCoefficient']))
+
+  return render(request, 'training.html', context)
 
 def identification(request):
   context = {

@@ -89,7 +89,7 @@ def basicToneIdentification(filename, k, windowLength, frameLength, mfccTotalFea
       
   return result
 
-def tonePatternIdentification(filename, k, windowLength, frameLength, mfccCoefficients):
+def tonePatternIdentification(filename, k, windowLength, frameLength, mfccCoefficient):
   x, sr = librosa.load(filename)
   onsetDetection = librosa.onset.onset_detect(x, sr=sr, units='time')
   toneDetect = []
@@ -104,7 +104,7 @@ def tonePatternIdentification(filename, k, windowLength, frameLength, mfccCoeffi
         end = int(librosa.get_duration(filename=filename)*1000)
     newAudio = newAudio[start:end]
     newAudio.export('temp.wav', format="wav")
-    result = basicToneIdentification('temp.wav', k, windowLength, frameLength, mfccCoefficients)
+    result = basicToneIdentification('temp.wav', k, windowLength, frameLength, mfccCoefficient)
     toneDetect.append(result)
 
   os.remove('temp.wav')

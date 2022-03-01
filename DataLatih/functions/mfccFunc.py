@@ -2,8 +2,8 @@ import librosa
 import librosa.feature
 
 # MFCC
-def mfcc_extract(filename, windowLength, frameLength, mfccCoefficients):
-  windowLength, frameLength, mfccCoefficients
+def mfcc_extract(filename, windowLength, frameLength, mfccCoefficient):
+  windowLength, frameLength, mfccCoefficient
   # LOAD SONG WITH 44,1K
   y, sr  = librosa.load(filename, sr=44100)
   # SILENCE REMOVAL
@@ -13,5 +13,5 @@ def mfcc_extract(filename, windowLength, frameLength, mfccCoefficients):
   # FRAME LENGTH = 10ms
   b=int(frameLength*sr)
   # EXTRACTION
-  mfcc = librosa.feature.mfcc(y=yt, sr=sr, n_mfcc=mfccCoefficients,n_fft=a,hop_length=b)
+  mfcc = librosa.feature.mfcc(y=yt, sr=sr, n_mfcc=mfccCoefficient,n_fft=a,hop_length=b)
   return mfcc

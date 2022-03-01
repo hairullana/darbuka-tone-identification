@@ -27,27 +27,28 @@
 					<img class="img-responsive" src="{% static 'images/wrapper-img.png' %}">
 				</div>
 				<div class="col-md-7">
-					<form class="row contact-form" id="contact-form" style="margin: 0 10px;">
+					<form class="row contact-form" id="contact-form" style="margin: 0 10px;" action="#training" method="post">
+						{% csrf_token %}
 						<div class="block">
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="windowLength" type="number" step="0.01" class="form-control" placeholder="Window Length">
+										<input name="windowLength" type="number" step="0.001" value="{{ windowLength }}" class="form-control" placeholder="Window Length">
 									</div>
 								</div>
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="frameLength" type="number" step="0.01" class="form-control" placeholder="Frame Length">
+										<input name="frameLength" type="number" step="0.001" value="{{ frameLength }}" class="form-control" placeholder="Frame Length">
 									</div>
 								</div>
 								<div class="col-sm-12">
 									<div class="form-group">
-										<input name="mfccCoefficient" type="number" class="form-control" placeholder="MFCC Coefficient">
+										<input name="mfccCoefficient" type="number" value="{{ mfccCoefficient }}" class="form-control" placeholder="MFCC Coefficient">
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-12">
-								<button class="btn btn-default" type="submit">Send Message</button>
+								<button class="btn btn-default" name="trainingData" type="submit">Send Message</button>
 							</div>
 						</div>
 					</form>
@@ -55,5 +56,38 @@
 			</div>
 		</div>
 	</section>
+
+	
+	{% if trainingResult %}
+		
+		<section class="service-list section bg-gray" id="training">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="section-title text-center">
+							<h2>Training Dataset</h2>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="col-md-12">
+						<div class="col">
+							<div class="block text-center">
+								<h3>
+									<strong>
+										{{ trainingResult |safe }}
+									</strong>
+								</h3>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+	{% endif %}
+		
 
 {% endblock body %}
