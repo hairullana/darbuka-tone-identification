@@ -1,9 +1,17 @@
 from django.db import connection
 from darbukaToneIdentification.functions.mfccFunc import mfcc_extract
 import numpy as np
+from mfcc_parameters.models import mfcc_parameters
 
 def trainingData(windowLength, frameLength, mfccCoefficient):
   trainingResult = ""
+
+  mfccParameter = mfcc_parameters.objects.all()[0]
+  mfccParameter.window_length = windowLength
+  mfccParameter.frame_length = frameLength
+  mfccParameter.mfcc_coefficient = mfccCoefficient
+  mfccParameter.save()
+
   with connection.cursor() as cursor:
 
     # DELETE ALL DATA
