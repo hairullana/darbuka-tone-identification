@@ -30,25 +30,31 @@
 						{% csrf_token %}
 						<div class="block">
 							<div class="row">
-								<div class="col-sm-3">
+								<div class="col-sm-2">
 									<div class="form-group">
-										<label for="windowLength">Window Length ({{ windowLength }})</label>
-										<input id="windowLength" name="windowLength" type="number" step="0.001" value="{{ windowLength }}" class="form-control" placeholder="Window Length">
+										<label for="windowLength">Window Length</label>
+										<input id="windowLength" name="windowLength" type="number" step="0.001" value="{{ windowLength }}" class="form-control" placeholder="Window Length" disabled>
 									</div>
 								</div>
-								<div class="col-sm-3">
+								<div class="col-sm-2">
 									<div class="form-group">
-										<label for="frameLength">Frame Length ({{ frameLength }})</label>
-										<input id="frameLength" name="frameLength" type="number" step="0.001" value="{{ frameLength }}" class="form-control" placeholder="Frame Length">
+										<label for="frameLength">Frame Length</label>
+										<input id="frameLength" name="frameLength" type="number" step="0.001" value="{{ frameLength }}" class="form-control" placeholder="Frame Length" disabled>
 									</div>
 								</div>
-								<div class="col-sm-3">
+								<div class="col-sm-2">
 									<div class="form-group">
-										<label for="k">K ({{ k }})</label>
+										<label for="k">MFCC Coefficient</label>
+										<input id="k" name="k" type="number" value="{{ mfccCoefficient }}" class="form-control" placeholder="K" disabled>
+									</div>
+								</div>
+								<div class="col-sm-2">
+									<div class="form-group">
+										<label for="k">K</label>
 										<input id="k" name="k" type="number" value="{{ k }}" class="form-control" placeholder="K">
 									</div>
 								</div>
-								<div class="col-sm-3">
+								<div class="col-sm-4">
 									<div class="form-group">
 										<label for="inputFile">Input File WAV <em>(optional)</em></label>
 										<input id="inputFile" name="inputFile" type="file" class="form-control" placeholder="K">

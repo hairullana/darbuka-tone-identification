@@ -4,16 +4,19 @@ from darbukaToneIdentification.functions.automaticClassificationFunc import basi
 from django.core.files.storage import FileSystemStorage
 from darbukaToneIdentification.functions.classificationFunc import basicToneIdentification, tonePatternIdentification
 from darbukaToneIdentification.functions.trainingDataFunc import trainingData
+from mfcc_parameters.models import mfcc_parameters
 
 
 def index(request):
   return render(request, 'index.html')
 
 def training(request):
+  mfcc_parameter = mfcc_parameters.objects.all()[0]
+
   context = {
-    'windowLength': 0.02,
-    'frameLength': 0.01,
-    'mfccCoefficient': 13,
+    'windowLength': mfcc_parameter.window_length,
+    'frameLength': mfcc_parameter.frame_length,
+    'mfccCoefficient': mfcc_parameter.mfcc_coefficient,
   }
 
   if 'trainingData' in request.POST:
@@ -22,9 +25,12 @@ def training(request):
   return render(request, 'training.html', context)
 
 def identification(request):
+  mfcc_parameter = mfcc_parameters.objects.all()[0]
+
   context = {
-    'windowLength': 0.02,
-    'frameLength': 0.01,
+    'windowLength': mfcc_parameter.window_length,
+    'frameLength': mfcc_parameter.frame_length,
+    'mfccCoefficient': mfcc_parameter.mfcc_coefficient,
     'k': 1,
   }
 
