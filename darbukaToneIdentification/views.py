@@ -31,9 +31,12 @@ def identification(request):
     'windowLength': mfcc_parameter.window_length,
     'frameLength': mfcc_parameter.frame_length,
     'mfccCoefficient': mfcc_parameter.mfcc_coefficient,
+    'k': 1,
   }
 
   if request.method == 'POST':
+    context['k'] = request.POST['k']
+
     if 'basicToneAutomatic' in request.POST :
       context['dumResult'], context['takResult'], context['slapResult'], context['accuracyResult'] = basicToneAutomaticIdentification(float(context['windowLength']), float(context['frameLength']), int(context['mfccCoefficient']), int(request.POST['k']))
     elif 'tonePatternAutomatic' in request.POST :
