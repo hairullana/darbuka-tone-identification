@@ -31,13 +31,16 @@ def identification(request):
     'windowLength': mfcc_parameter.window_length,
     'frameLength': mfcc_parameter.frame_length,
     'mfccCoefficient': mfcc_parameter.mfcc_coefficient,
+    'k': 1,
   }
 
   if request.method == 'POST':
+    context['k'] = request.POST['k']
+
     if 'basicToneAutomatic' in request.POST :
-      context['dumResult'], context['takResult'], context['slapResult'], context['accuracyResult'] = basicToneAutomaticIdentification(float(context['windowLength']), float(context['frameLength']), int(context['mfccCoefficient']), int(request.POST['k']))
+      context['dumResult'], context['takResult'], context['slapResult'], context['accuracyResult'] = basicToneAutomaticIdentification(float(context['windowLength']), float(context['frameLength']), int(context['mfccCoefficient']), int(context['k']))
     elif 'tonePatternAutomatic' in request.POST :
-      context['baladiResult'], context['maqsumResult'], context['sayyidiResult'], context['accuracyResult'] = tonePatternAutomaticIdentification(float(context['windowLength']), float(context['frameLength']), int(context['mfccCoefficient']), int(request.POST['k']))
+      context['baladiResult'], context['maqsumResult'], context['sayyidiResult'], context['accuracyResult'] = tonePatternAutomaticIdentification(float(context['windowLength']), float(context['frameLength']), int(context['mfccCoefficient']), int(context['k']))
     elif 'basicTone' in request.POST and request.FILES:
       dir = 'temp'
       for f in os.listdir(dir):
@@ -46,7 +49,7 @@ def identification(request):
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      result = basicToneIdentification('temp/temp.wav', int(request.POST['k']), float(context['windowLength']), float(context['frameLength']), int(context['mfccCoefficient']))
+      result = basicToneIdentification('temp/temp.wav', int(context['k']), float(context['windowLength']), float(context['frameLength']), int(context['mfccCoefficient']))
 
       context['resultBasicTone'] = result
       context['fileLocation'] = '/temp/temp.wav'
@@ -59,7 +62,7 @@ def identification(request):
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      result = tonePatternIdentification('temp/temp.wav', int(request.POST['k']), float(context['windowLength']), float(context['frameLength']), int(context['mfccCoefficient']))
+      result = tonePatternIdentification('temp/temp.wav', int(context['k']), float(context['windowLength']), float(context['frameLength']), int(context['mfccCoefficient']))
 
       context['resultTonePattern'] = result
       context['fileLocation'] = '/temp/temp.wav'

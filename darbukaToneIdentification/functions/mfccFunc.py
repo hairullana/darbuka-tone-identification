@@ -7,7 +7,7 @@ def mfcc_extract(filename, windowLength, frameLength, mfccCoefficient):
   # LOAD SONG WITH 44,1K
   y, sr  = librosa.load(filename, sr=44100)
   # SILENCE REMOVAL
-  yt, index = librosa.effects.trim(y, top_db=30)
+  yt, index = librosa.effects.trim(y, top_db=10)
   # WINDOW WIDTH (OVERLAPPING) = 20ms
   a=int(windowLength*sr)
   # FRAME LENGTH = 10ms
