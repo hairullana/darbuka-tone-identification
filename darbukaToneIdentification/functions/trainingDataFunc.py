@@ -3,12 +3,12 @@ from darbukaToneIdentification.functions.mfccFunc import mfcc_extract
 import numpy as np
 from mfcc_parameters.models import mfcc_parameters
 
-def trainingData(windowLength, frameLength, mfccCoefficient):
+def trainingData(frameLength, hopLength, mfccCoefficient):
   trainingResult = ""
 
   mfccParameter = mfcc_parameters.objects.all()[0]
-  mfccParameter.window_length = windowLength
-  mfccParameter.frame_length = frameLength
+  mfccParameter.window_length = frameLength
+  mfccParameter.frame_length = hopLength
   mfccParameter.mfcc_coefficient = mfccCoefficient
   mfccParameter.save()
 
@@ -33,7 +33,7 @@ def trainingData(windowLength, frameLength, mfccCoefficient):
       for j in range(50) :
         filename = 'static/dataset/toneBasic/' + i + '/' + i + str(j+1) + '.wav'
         # EXTRACTION
-        mfccResult = mfcc_extract(filename, windowLength, frameLength, mfccCoefficient)
+        mfccResult = mfcc_extract(filename, frameLength, hopLength, mfccCoefficient)
         # MEAN OF EACH COEFFICIENT
         mfccResult = np.mean(mfccResult, axis=1)
         # CONVERT TO STRING

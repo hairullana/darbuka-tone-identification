@@ -3,7 +3,7 @@ from pydub import AudioSegment
 import librosa
 import os
 
-def basicToneAutomaticIdentification(windowLength, frameLength, mfccCoefficient, k):
+def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k):
   dumResult = []
   takResult = []
   slapResult = []
@@ -16,7 +16,7 @@ def basicToneAutomaticIdentification(windowLength, frameLength, mfccCoefficient,
   for i in range(20) :
     indeks = i + 51
     filename = 'static/dataset/toneBasic/dum/dum' + str(indeks) + '.wav'
-    result = classificationFunc.basicToneIdentification(filename, k, windowLength, frameLength, mfccCoefficient)
+    result = classificationFunc.basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'DUM':
       totalTrueDum += 1
     dumResult.append(result)
@@ -25,7 +25,7 @@ def basicToneAutomaticIdentification(windowLength, frameLength, mfccCoefficient,
   for i in range(20) :
     indeks = i + 51
     filename = 'static/dataset/toneBasic/tak/tak' + str(indeks) + '.wav'
-    result = classificationFunc.basicToneIdentification(filename, k, windowLength, frameLength, mfccCoefficient)
+    result = classificationFunc.basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'TAK':
       totalTrueTak += 1
     takResult.append(result)
@@ -34,7 +34,7 @@ def basicToneAutomaticIdentification(windowLength, frameLength, mfccCoefficient,
   for i in range(20) :
     indeks = i + 51
     filename = 'static/dataset/toneBasic/slap/slap' + str(indeks) + '.wav'
-    result = classificationFunc.basicToneIdentification(filename, k, windowLength, frameLength, mfccCoefficient)
+    result = classificationFunc.basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'SLAP':
       totalTrueSlap += 1
     slapResult.append(result)
@@ -49,7 +49,7 @@ def basicToneAutomaticIdentification(windowLength, frameLength, mfccCoefficient,
   return dumResult, takResult, slapResult, accuracyResult
 
 
-def tonePatternAutomaticIdentification(windowLength, frameLength, mfccCoefficient, k):
+def tonePatternAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k):
   baladiResult = []
   maqsumResult = []
   sayyidiResult = []
@@ -110,7 +110,7 @@ def tonePatternAutomaticIdentification(windowLength, frameLength, mfccCoefficien
             end = int(librosa.get_duration(filename=filename)*1000)
         newAudio = newAudio[start:end]
         newAudio.export('temp.wav', format="wav")
-        result = classificationFunc.basicToneIdentification('temp.wav', k, windowLength, frameLength, mfccCoefficient)
+        result = classificationFunc.basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient)
         if j != len(onsetDetection):
           temp += result.lower() + '-'
         else :

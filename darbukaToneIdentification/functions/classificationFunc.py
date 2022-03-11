@@ -23,9 +23,9 @@ for x in data:
     slap.append(np.fromstring(dataExtraction.strip('[]'),count=13, dtype=float, sep=' '))
 
 # CLASSIFICATION
-def basicToneIdentification(filename, k, windowLength, frameLength, mfccTotalFeature) :
+def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeature) :
   # MFCC
-  testing = mfccFunc.mfcc_extract(filename, windowLength, frameLength, mfccTotalFeature)
+  testing = mfccFunc.mfcc_extract(filename, frameLength, hopLength, mfccTotalFeature)
   # MEAN OF EACH COEFFICIENT
   testing = np.mean(testing, axis=1)
   # CALCULATE DISTANCE
@@ -93,7 +93,7 @@ def basicToneIdentification(filename, k, windowLength, frameLength, mfccTotalFea
   # print(k_slap)
   return result
 
-def tonePatternIdentification(filename, k, windowLength, frameLength, mfccCoefficient):
+def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient):
   x, sr = librosa.load(filename)
   onsetDetection = librosa.onset.onset_detect(x, sr=sr, units='time')
   toneDetect = []
@@ -108,7 +108,7 @@ def tonePatternIdentification(filename, k, windowLength, frameLength, mfccCoeffi
         end = int(librosa.get_duration(filename=filename)*1000)
     newAudio = newAudio[start:end]
     newAudio.export('temp.wav', format="wav")
-    result = basicToneIdentification('temp.wav', k, windowLength, frameLength, mfccCoefficient)
+    result = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient)
     toneDetect.append(result)
 
   os.remove('temp.wav')
