@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
             name='mfcc_parameters',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('window_length', models.FloatField()),
                 ('frame_length', models.FloatField()),
+                ('hop_length', models.FloatField()),
                 ('mfcc_coefficient', models.IntegerField()),
             ],
         ),

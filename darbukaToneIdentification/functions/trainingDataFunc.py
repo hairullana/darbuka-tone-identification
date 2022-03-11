@@ -7,8 +7,8 @@ def trainingData(frameLength, hopLength, mfccCoefficient):
   trainingResult = ""
 
   mfccParameter = mfcc_parameters.objects.all()[0]
-  mfccParameter.window_length = frameLength
-  mfccParameter.frame_length = hopLength
+  mfccParameter.frame_length = frameLength
+  mfccParameter.hop_length = hopLength
   mfccParameter.mfcc_coefficient = mfccCoefficient
   mfccParameter.save()
 

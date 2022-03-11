@@ -14,8 +14,8 @@ def training(request):
   mfcc_parameter = mfcc_parameters.objects.all()[0]
 
   context = {
-    'frameLength': mfcc_parameter.window_length,
-    'hopLength': mfcc_parameter.frame_length,
+    'frameLength': mfcc_parameter.frame_length,
+    'hopLength': mfcc_parameter.hop_length,
     'mfccCoefficient': mfcc_parameter.mfcc_coefficient,
   }
 
@@ -28,8 +28,8 @@ def identification(request):
   mfcc_parameter = mfcc_parameters.objects.all()[0]
 
   context = {
-    'frameLength': mfcc_parameter.window_length,
-    'hopLength': mfcc_parameter.frame_length,
+    'frameLength': mfcc_parameter.frame_length,
+    'hopLength': mfcc_parameter.hop_length,
     'mfccCoefficient': mfcc_parameter.mfcc_coefficient,
     'k': 1,
   }
