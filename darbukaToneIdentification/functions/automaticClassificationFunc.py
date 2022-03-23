@@ -2,6 +2,7 @@ from . import classificationFunc
 from pydub import AudioSegment
 import librosa
 import os
+import numpy as np
 
 def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k):
   dumResult = []
@@ -96,6 +97,8 @@ def tonePatternAutomaticIdentification(frameLength, hopLength, mfccCoefficient, 
       x, sr = librosa.load(filename)
       # x, index = librosa.effects.trim(x, top_db=30)
       onsetDetection = librosa.onset.onset_detect(x, sr=sr, units='time')
+      while len(onsetDetection) > 5 :
+        onsetDetection = np.delete(onsetDetection, 0)
       j=1
       temp = ''
       resultDetect = []

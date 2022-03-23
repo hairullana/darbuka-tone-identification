@@ -96,6 +96,8 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
 def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient):
   x, sr = librosa.load(filename)
   onsetDetection = librosa.onset.onset_detect(x, sr=sr, units='time')
+  while len(onsetDetection) > 5 :
+    onsetDetection = np.delete(onsetDetection, 0)
   toneDetect = []
 
   j=1
