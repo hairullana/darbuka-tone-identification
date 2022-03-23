@@ -4,52 +4,6 @@ import librosa
 import os
 import numpy as np
 
-def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k):
-  dumResult = []
-  takResult = []
-  slapResult = []
-  totalTrueDum = 0
-  totalTrueTak = 0
-  totalTrueSlap = 0
-  accuracyResult = ""
-
-  # TESTING DUM
-  for i in range(20) :
-    indeks = i + 51
-    filename = 'static/dataset/toneBasic/dum/dum' + str(indeks) + '.wav'
-    result = classificationFunc.basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
-    if result == 'DUM':
-      totalTrueDum += 1
-    dumResult.append(result)
-
-  # TESTING TAK
-  for i in range(20) :
-    indeks = i + 51
-    filename = 'static/dataset/toneBasic/tak/tak' + str(indeks) + '.wav'
-    result = classificationFunc.basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
-    if result == 'TAK':
-      totalTrueTak += 1
-    takResult.append(result)
-
-  # TESTING SLAP
-  for i in range(20) :
-    indeks = i + 51
-    filename = 'static/dataset/toneBasic/slap/slap' + str(indeks) + '.wav'
-    result = classificationFunc.basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
-    if result == 'SLAP':
-      totalTrueSlap += 1
-    slapResult.append(result)
-  
-  totalTrue = totalTrueDum + totalTrueTak + totalTrueSlap
-
-  accuracyResult += "Total = " + str(totalTrue) + "/60 (" + str("{:.2f}".format(totalTrue/60*100)) + "%)<br/>"
-  accuracyResult += "DUM Tone = " + str(totalTrueDum) + "/20 (" + str("{:.2f}".format(totalTrueDum/20*100)) + "%)<br/>"
-  accuracyResult += "TAK Tone = " + str(totalTrueTak) + "/20 (" + str("{:.2f}".format(totalTrueTak/20*100)) + "%)<br/>"
-  accuracyResult += "SLAP Tone = " + str(totalTrueSlap) + "/20 (" + str("{:.2f}".format(totalTrueSlap/20*100)) + "%)"
-
-  return dumResult, takResult, slapResult, accuracyResult
-
-
 def tonePatternAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k):
   baladiResult = []
   maqsumResult = []
@@ -178,3 +132,48 @@ def tonePatternAutomaticIdentification(frameLength, hopLength, mfccCoefficient, 
     accuracyResult += "SLAP Tone = " + str(totalTrueSlap) + "/" + str(totalSlap) + " (" + str("{:.2f}".format(totalTrueSlap/totalSlap*100)) + "%)"
 
   return baladiResult, maqsumResult, sayyidiResult, accuracyResult
+
+# def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k):
+#   dumResult = []
+#   takResult = []
+#   slapResult = []
+#   totalTrueDum = 0
+#   totalTrueTak = 0
+#   totalTrueSlap = 0
+#   accuracyResult = ""
+
+#   # TESTING DUM
+#   for i in range(10) :
+#     indeks = i + 61
+#     filename = 'static/dataset/toneBasic/dum/dum' + str(indeks) + '.wav'
+#     result = classificationFunc.basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
+#     if result == 'DUM':
+#       totalTrueDum += 1
+#     dumResult.append(result)
+
+#   # TESTING TAK
+#   for i in range(10) :
+#     indeks = i + 61
+#     filename = 'static/dataset/toneBasic/tak/tak' + str(indeks) + '.wav'
+#     result = classificationFunc.basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
+#     if result == 'TAK':
+#       totalTrueTak += 1
+#     takResult.append(result)
+
+#   # TESTING SLAP
+#   for i in range(10) :
+#     indeks = i + 61
+#     filename = 'static/dataset/toneBasic/slap/slap' + str(indeks) + '.wav'
+#     result = classificationFunc.basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
+#     if result == 'SLAP':
+#       totalTrueSlap += 1
+#     slapResult.append(result)
+  
+#   totalTrue = totalTrueDum + totalTrueTak + totalTrueSlap
+
+#   accuracyResult += "Total = " + str(totalTrue) + "/30 (" + str("{:.2f}".format(totalTrue/30*100)) + "%)<br/>"
+#   accuracyResult += "DUM Tone = " + str(totalTrueDum) + "/10 (" + str("{:.2f}".format(totalTrueDum/10*100)) + "%)<br/>"
+#   accuracyResult += "TAK Tone = " + str(totalTrueTak) + "/10 (" + str("{:.2f}".format(totalTrueTak/10*100)) + "%)<br/>"
+#   accuracyResult += "SLAP Tone = " + str(totalTrueSlap) + "/10 (" + str("{:.2f}".format(totalTrueSlap/10*100)) + "%)"
+
+#   return dumResult, takResult, slapResult, accuracyResult
