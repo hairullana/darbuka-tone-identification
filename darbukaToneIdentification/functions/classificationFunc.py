@@ -5,6 +5,7 @@ from . import mfccFunc
 from dataset.models import dataset
 import librosa
 from pydub import AudioSegment
+from . import classificationFunc
 
 # COLLECTING TRAINING DATASET IN DB
 data = dataset.objects.all()
@@ -94,13 +95,13 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
   return result
 
 def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient):
-  x, sr = librosa.load(filename)
+  x, sr = librosa.load(filename, sr=44100)
   onsetDetection = librosa.onset.onset_detect(x, sr=sr, units='time')
   while len(onsetDetection) > 5 :
     onsetDetection = np.delete(onsetDetection, 0)
   toneDetect = []
-
   j=1
+
   for onset in onsetDetection:
     newAudio = AudioSegment.from_wav(filename)
     start = int(onset*1000)
@@ -110,8 +111,11 @@ def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficie
         end = int(librosa.get_duration(filename=filename)*1000)
     newAudio = newAudio[start:end]
     newAudio.export('temp.wav', format="wav")
-    result = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient)
+    result = classificationFunc.basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient)
+
     toneDetect.append(result)
+    
+    j += 1
 
   os.remove('temp.wav')
   return toneDetect

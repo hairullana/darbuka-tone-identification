@@ -14,9 +14,9 @@ def training(request):
   mfcc_parameter = mfcc_parameters.objects.all()[0]
 
   context = {
-    'frameLength': mfcc_parameter.frame_length,
-    'hopLength': mfcc_parameter.hop_length,
-    'mfccCoefficient': mfcc_parameter.mfcc_coefficient,
+    'frameLength': float(mfcc_parameter.frame_length),
+    'hopLength': float(mfcc_parameter.hop_length),
+    'mfccCoefficient': int(mfcc_parameter.mfcc_coefficient),
   }
 
   if 'trainingData' in request.POST:
@@ -28,10 +28,10 @@ def identification(request):
   mfcc_parameter = mfcc_parameters.objects.all()[0]
 
   context = {
-    'frameLength': mfcc_parameter.frame_length,
-    'hopLength': mfcc_parameter.hop_length,
-    'mfccCoefficient': mfcc_parameter.mfcc_coefficient,
-    'k': 1,
+    'frameLength': float(mfcc_parameter.frame_length),
+    'hopLength': float(mfcc_parameter.hop_length),
+    'mfccCoefficient': int(mfcc_parameter.mfcc_coefficient),
+    'k': 3,
   }
 
   if request.method == 'POST':

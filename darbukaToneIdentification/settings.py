@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dataset',
     'mfcc_parameters',
+    'clear_cache',
 ]
 
 MIDDLEWARE = [
