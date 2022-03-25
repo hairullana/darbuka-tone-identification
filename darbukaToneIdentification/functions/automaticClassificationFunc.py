@@ -9,11 +9,11 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   totalTrueSlap = 0
   accuracyResult = ""
 
-  totalTrainingData = 20
+  totalTesting = 10
 
   # TESTING DUM
-  for i in range(totalTrainingData) :
-    indeks = i + 51
+  for i in range(totalTesting) :
+    indeks = i + 61
     filename = 'static/dataset/toneBasicNoise/dum/dum' + str(indeks) + '.wav'
     result = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'DUM':
@@ -21,8 +21,8 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
     dumResult.append(result)
 
   # TESTING TAK
-  for i in range(totalTrainingData) :
-    indeks = i + 51
+  for i in range(totalTesting) :
+    indeks = i + 61
     filename = 'static/dataset/toneBasicNoise/tak/tak' + str(indeks) + '.wav'
     result = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'TAK':
@@ -30,8 +30,8 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
     takResult.append(result)
 
   # TESTING SLAP
-  for i in range(totalTrainingData) :
-    indeks = i + 51
+  for i in range(totalTesting) :
+    indeks = i + 61
     filename = 'static/dataset/toneBasicNoise/slap/slap' + str(indeks) + '.wav'
     result = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'SLAP':
@@ -40,10 +40,10 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   
   totalTrue = totalTrueDum + totalTrueTak + totalTrueSlap
 
-  accuracyResult += "Total = " + str(totalTrue) + "/" + str(totalTrainingData*3) + " (" + str("{:.2f}".format(totalTrue/(totalTrainingData*3)*100)) + "%)<br/>"
-  accuracyResult += "DUM Tone = " + str(totalTrueDum) + "/" + str(totalTrainingData) + " (" + str("{:.2f}".format(totalTrueDum/totalTrainingData*100)) + "%)<br/>"
-  accuracyResult += "TAK Tone = " + str(totalTrueTak) + "/" + str(totalTrainingData) + " (" + str("{:.2f}".format(totalTrueTak/totalTrainingData*100)) + "%)<br/>"
-  accuracyResult += "SLAP Tone = " + str(totalTrueSlap) + "/" + str(totalTrainingData) + " (" + str("{:.2f}".format(totalTrueSlap/totalTrainingData*100)) + "%)"
+  accuracyResult += "Total = " + str(totalTrue) + "/" + str(totalTesting*3) + " (" + str("{:.2f}".format(totalTrue/(totalTesting*3)*100)) + "%)<br/>"
+  accuracyResult += "DUM Tone = " + str(totalTrueDum) + "/" + str(totalTesting) + " (" + str("{:.2f}".format(totalTrueDum/totalTesting*100)) + "%)<br/>"
+  accuracyResult += "TAK Tone = " + str(totalTrueTak) + "/" + str(totalTesting) + " (" + str("{:.2f}".format(totalTrueTak/totalTesting*100)) + "%)<br/>"
+  accuracyResult += "SLAP Tone = " + str(totalTrueSlap) + "/" + str(totalTesting) + " (" + str("{:.2f}".format(totalTrueSlap/totalTesting*100)) + "%)"
 
   return dumResult, takResult, slapResult, accuracyResult
 
