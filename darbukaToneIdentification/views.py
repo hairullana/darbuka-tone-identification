@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import render
-from darbukaToneIdentification.functions.automaticClassificationFunc import basicToneAutomaticIdentification, tonePatternAutomaticIdentification
+from darbukaToneIdentification.functions.automaticClassificationFunc import tonePatternAutomaticIdentification
 from django.core.files.storage import FileSystemStorage
 from darbukaToneIdentification.functions.classificationFunc import basicToneIdentification, tonePatternIdentification
 from darbukaToneIdentification.functions.trainingDataFunc import trainingData
@@ -37,23 +37,8 @@ def identification(request):
   if request.method == 'POST':
     context['k'] = request.POST['k']
 
-    if 'basicToneAutomatic' in request.POST :
-      context['dumResult'], context['takResult'], context['slapResult'], context['accuracyResult'] = basicToneAutomaticIdentification(float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), int(context['k']))
-    elif 'tonePatternAutomatic' in request.POST :
+    if 'tonePatternAutomatic' in request.POST :
       context['baladiResult'], context['maqsumResult'], context['sayyidiResult'], context['accuracyResult'] = tonePatternAutomaticIdentification(float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), int(context['k']))
-    elif 'basicTone' in request.POST and request.FILES:
-      dir = 'temp'
-      for f in os.listdir(dir):
-          os.remove(os.path.join(dir, f))
-      inputFile = request.FILES['inputFile']
-      fs = FileSystemStorage()
-      fs.save('temp.wav', inputFile)
-
-      result = basicToneIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']))
-
-      context['resultBasicTone'] = result
-      context['fileLocation'] = '/temp/temp.wav'
-      context['filename'] = inputFile.name
     elif 'tonePattern' in request.POST and request.FILES:
       dir = 'temp'
       for f in os.listdir(dir):
