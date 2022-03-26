@@ -9,11 +9,11 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   totalTrueSlap = 0
   accuracyResult = ""
 
-  totalTesting = 10
+  totalTesting = 20
 
   # TESTING DUM
   for i in range(totalTesting) :
-    indeks = i + 61
+    indeks = i + 51
     filename = 'static/dataset/toneBasicNoise/dum/dum' + str(indeks) + '.wav'
     result = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'DUM':
@@ -22,7 +22,7 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
 
   # TESTING TAK
   for i in range(totalTesting) :
-    indeks = i + 61
+    indeks = i + 51
     filename = 'static/dataset/toneBasicNoise/tak/tak' + str(indeks) + '.wav'
     result = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'TAK':
@@ -31,7 +31,7 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
 
   # TESTING SLAP
   for i in range(totalTesting) :
-    indeks = i + 61
+    indeks = i + 51
     filename = 'static/dataset/toneBasicNoise/slap/slap' + str(indeks) + '.wav'
     result = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'SLAP':

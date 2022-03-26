@@ -30,7 +30,7 @@ def trainingData(frameLength, hopLength, mfccCoefficient):
     
     # TRAINING
     for i in toneType :
-      for j in range(60) :
+      for j in range(50) :
         filename = 'static/dataset/toneBasicNoise/' + i + '/' + i + str(j+1) + '.wav'
         # EXTRACTION
         mfccResult = mfcc_extract(filename, frameLength, hopLength, mfccCoefficient)
@@ -40,6 +40,6 @@ def trainingData(frameLength, hopLength, mfccCoefficient):
         mfccResult = np.array2string(mfccResult)
         # SAVE TO DB
         saveToDatabase(i, mfccResult)
-      trainingResult += 'Successful training 60 data on ' + i.upper() + ' tone.<br/>'
+      trainingResult += 'Successful training 50 data on ' + i.upper() + ' tone.<br/>'
 
   return trainingResult
