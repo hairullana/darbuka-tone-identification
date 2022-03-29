@@ -33,19 +33,19 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
   data_jarak = []
   for nada_dum in dum :
     total = 0
-    for i in range(13) :
+    for i in range(mfccTotalFeature) :
       total += pow((nada_dum[i] - testing[i]),2)
     euclidean_distance = math.sqrt(total)
     data_jarak.append(euclidean_distance)
   for nada_tak in tak :
     total = 0
-    for i in range(13) :
+    for i in range(mfccTotalFeature) :
       total += pow((nada_tak[i] - testing[i]),2)
     euclidean_distance = math.sqrt(total)
     data_jarak.append(euclidean_distance)
   for nada_slap  in slap :
     total = 0
-    for i in range(13) :
+    for i in range(mfccTotalFeature) :
       total += pow((nada_slap[i] - testing[i]),2)
     euclidean_distance = math.sqrt(total)
     data_jarak.append(euclidean_distance)
