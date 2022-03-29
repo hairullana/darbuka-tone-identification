@@ -17,11 +17,11 @@ slap = []
 for x in data:
   dataExtraction = x.extraction
   if x.tone == 'dum' :
-    dum.append(np.fromstring(dataExtraction.strip('[]'),count=13, dtype=float, sep=' '))
+    dum.append(np.fromstring(dataExtraction.strip('[]'), dtype=float, sep=' '))
   elif x.tone == 'tak' :
-    tak.append(np.fromstring(dataExtraction.strip('[]'),count=13, dtype=float, sep=' '))
+    tak.append(np.fromstring(dataExtraction.strip('[]'), dtype=float, sep=' '))
   elif x.tone == 'slap' :
-    slap.append(np.fromstring(dataExtraction.strip('[]'),count=13, dtype=float, sep=' '))
+    slap.append(np.fromstring(dataExtraction.strip('[]'), dtype=float, sep=' '))
 
 # CLASSIFICATION
 def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeature) :
