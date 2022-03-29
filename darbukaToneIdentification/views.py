@@ -11,6 +11,9 @@ def index(request):
   return render(request, 'index.html')
 
 def training(request):
+  if 'trainingData' in request.POST:
+    context['trainingResult'] = trainingData(float(request.POST['frameLength']), float(request.POST['hopLength']), int(request.POST['mfccCoefficient']))
+  
   mfcc_parameter = mfcc_parameters.objects.all()[0]
 
   context = {
@@ -19,13 +22,6 @@ def training(request):
     'mfccCoefficient': int(mfcc_parameter.mfcc_coefficient),
   }
 
-  if 'trainingData' in request.POST:
-    context['trainingResult'] = trainingData(float(request.POST['frameLength']), float(request.POST['hopLength']), int(request.POST['mfccCoefficient']))
-    context = {
-      'frameLength': float(request.POST['frameLength']),
-      'hopLength': float(request.POST['hopLength']),
-      'mfccCoefficient': int(request.POST['mfccCoefficient']),
-    }
 
   return render(request, 'training.html', context)
 
