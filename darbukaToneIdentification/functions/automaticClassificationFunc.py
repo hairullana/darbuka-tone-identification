@@ -1,6 +1,8 @@
 from .classificationFunc import basicToneIdentification, tonePatternIdentification
+from django.core.cache import cache
 
 def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k):
+  cache.clear()
   dumResult = []
   takResult = []
   slapResult = []
@@ -49,6 +51,8 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
 
 
 def tonePatternAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k):
+  cache.clear()
+
   baladiResult = []
   maqsumResult = []
   sayyidiResult = []

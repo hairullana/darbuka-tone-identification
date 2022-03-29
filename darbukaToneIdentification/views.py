@@ -5,7 +5,7 @@ from django.core.files.storage import FileSystemStorage
 from darbukaToneIdentification.functions.classificationFunc import basicToneIdentification, tonePatternIdentification
 from darbukaToneIdentification.functions.trainingDataFunc import trainingData
 from mfcc_parameters.models import mfcc_parameters
-
+from django.core.cache import cache
 
 def index(request):
   return render(request, 'index.html')
@@ -21,10 +21,16 @@ def training(request):
 
   if 'trainingData' in request.POST:
     context['trainingResult'] = trainingData(float(request.POST['frameLength']), float(request.POST['hopLength']), int(request.POST['mfccCoefficient']))
+    context = {
+      'frameLength': float(request.POST['frameLength']),
+      'hopLength': float(request.POST['hopLength']),
+      'mfccCoefficient': int(request.POST['mfccCoefficient']),
+    }
 
   return render(request, 'training.html', context)
 
 def identification(request):
+  cache.clear()
   mfcc_parameter = mfcc_parameters.objects.all()[0]
 
   context = {
