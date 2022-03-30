@@ -1,9 +1,9 @@
 import os
 from django.shortcuts import render
-from darbukaToneIdentification.functions.automaticClassificationFunc import tonePatternAutomaticIdentification, basicToneAutomaticIdentification
+from .functions.automaticClassificationFunc import tonePatternAutomaticIdentification, basicToneAutomaticIdentification
 from django.core.files.storage import FileSystemStorage
-from darbukaToneIdentification.functions.classificationFunc import basicToneIdentification, tonePatternIdentification
-from darbukaToneIdentification.functions.trainingDataFunc import trainingData
+from .functions.classificationFunc import basicToneIdentification, tonePatternIdentification
+from .functions.trainingDataFunc import trainingData
 from mfcc_parameters.models import mfcc_parameters
 from django.core.cache import cache
 
@@ -11,17 +11,15 @@ def index(request):
   return render(request, 'index.html')
 
 def training(request):
+  context = {}
+  
   if 'trainingData' in request.POST:
     context['trainingResult'] = trainingData(float(request.POST['frameLength']), float(request.POST['hopLength']), int(request.POST['mfccCoefficient']))
   
   mfcc_parameter = mfcc_parameters.objects.all()[0]
-
-  context = {
-    'frameLength': float(mfcc_parameter.frame_length),
-    'hopLength': float(mfcc_parameter.hop_length),
-    'mfccCoefficient': int(mfcc_parameter.mfcc_coefficient),
-  }
-
+  context['frameLength'] = float(mfcc_parameter.frame_length)
+  context['hopLength'] = float(mfcc_parameter.hop_length)
+  context['mfccCoefficient'] = int(mfcc_parameter.mfcc_coefficient)
 
   return render(request, 'training.html', context)
 

@@ -1,11 +1,10 @@
 import os
 import math
 import numpy as np
-from . import mfccFunc
+from .mfccFunc import mfcc_extract
 from dataset.models import dataset
 import librosa
 from pydub import AudioSegment
-from . import classificationFunc
 
 # COLLECTING TRAINING DATASET IN DB
 data = dataset.objects.all()
@@ -26,7 +25,7 @@ for x in data:
 # CLASSIFICATION
 def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeature) :
   # MFCC
-  testing = mfccFunc.mfcc_extract(filename, frameLength, hopLength, mfccTotalFeature)
+  testing = mfcc_extract(filename, frameLength, hopLength, mfccTotalFeature)
   # MEAN OF EACH COEFFICIENT
   testing = np.mean(testing, axis=1)
   # CALCULATE DISTANCE
@@ -111,7 +110,7 @@ def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficie
         end = int(librosa.get_duration(filename=filename)*1000)
     newAudio = newAudio[start:end]
     newAudio.export('temp.wav', format="wav")
-    result = classificationFunc.basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient)
+    result = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient)
 
     toneDetect.append(result)
     

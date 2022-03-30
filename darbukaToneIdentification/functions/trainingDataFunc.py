@@ -1,5 +1,5 @@
 from django.db import connection
-from darbukaToneIdentification.functions.mfccFunc import mfcc_extract
+from .mfccFunc import mfcc_extract
 import numpy as np
 from mfcc_parameters.models import mfcc_parameters
 
