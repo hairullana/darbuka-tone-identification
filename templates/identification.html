@@ -308,9 +308,10 @@
 								<h3><strong>{{ resultBasicTone }}</strong></h3>
 								<h3>
 									<audio controls>
-									<source src="{{ fileLocation }}" type="audio/wav">
-								</audio>
-							</h3>
+										<source src="{{ fileLocation }}" type="audio/wav">
+									</audio>
+								</h3>
+								<img src="data:image/png;base64, {{ graph|safe }}" alt="" style="width:100%">
 							</div>
 						</div>
 					</div>

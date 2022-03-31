@@ -16,8 +16,8 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   # TESTING DUM
   for i in range(totalTesting) :
     indeks = i + 51
-    filename = 'D:/Ngoding/darbukaToneClassification/static/dataset/toneBasicNoise/dum/dum' + str(indeks) + '.wav'
-    result = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
+    filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/dum/dum' + str(indeks) + '.wav'
+    result, graph = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'DUM':
       totalTrueDum += 1
     dumResult.append(result)
@@ -25,8 +25,8 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   # TESTING TAK
   for i in range(totalTesting) :
     indeks = i + 51
-    filename = 'D:/Ngoding/darbukaToneClassification/static/dataset/toneBasicNoise/tak/tak' + str(indeks) + '.wav'
-    result = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
+    filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/tak/tak' + str(indeks) + '.wav'
+    result, graph = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'TAK':
       totalTrueTak += 1
     takResult.append(result)
@@ -34,8 +34,8 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   # TESTING SLAP
   for i in range(totalTesting) :
     indeks = i + 51
-    filename = 'D:/Ngoding/darbukaToneClassification/static/dataset/toneBasicNoise/slap/slap' + str(indeks) + '.wav'
-    result = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
+    filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/slap/slap' + str(indeks) + '.wav'
+    result, graph = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
     if result == 'SLAP':
       totalTrueSlap += 1
     slapResult.append(result)
@@ -87,7 +87,7 @@ def tonePatternAutomaticIdentification(frameLength, hopLength, mfccCoefficient, 
 
   for tonePattern in tonePatterns:
     for i in range(10):
-      filename = 'D:/Ngoding/darbukaToneClassification/static/dataset/tonePattern/' + tonePattern + '2_' + str(i+1) + '.wav'
+      filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/tonePattern/' + tonePattern + '2_' + str(i+1) + '.wav'
       
       identification = []
       result = tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient)

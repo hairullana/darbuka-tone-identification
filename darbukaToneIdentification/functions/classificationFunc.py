@@ -1,10 +1,12 @@
 import os
 import math
 import numpy as np
+from .graph import get_graph
 from .mfccFunc import mfcc_extract
 from dataset.models import dataset
 import librosa
 from pydub import AudioSegment
+import matplotlib.pylab as plt
 
 # COLLECTING TRAINING DATASET IN DB
 data = dataset.objects.all()
@@ -24,6 +26,11 @@ for x in data:
 
 # CLASSIFICATION
 def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeature) :
+  audio,_ = librosa.load(filename, 44100)
+  plt.figure(figsize=(15,4))
+  plt.plot(np.linspace(0, len(audio) / 44100, num=len(audio)), audio)
+  graph = get_graph()
+
   # MFCC
   testing = mfcc_extract(filename, frameLength, hopLength, mfccTotalFeature)
   # MEAN OF EACH COEFFICIENT
@@ -91,7 +98,7 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
   # print(k_dum)
   # print(k_tak)
   # print(k_slap)
-  return result
+  return result, graph
 
 def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient):
   x, sr = librosa.load(filename, sr=44100)
@@ -110,7 +117,7 @@ def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficie
         end = int(librosa.get_duration(filename=filename)*1000)
     newAudio = newAudio[start:end]
     newAudio.export('temp.wav', format="wav")
-    result = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient)
+    result, graph = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient)
 
     toneDetect.append(result)
     
