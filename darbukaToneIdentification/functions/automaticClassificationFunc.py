@@ -17,7 +17,7 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   for i in range(totalTesting) :
     indeks = i + 51
     filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/dum/dum' + str(indeks) + '.wav'
-    result, graph = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
+    result, audioPlot, mfccPlot = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient, False)
     if result == 'DUM':
       totalTrueDum += 1
     dumResult.append(result)
@@ -26,7 +26,7 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   for i in range(totalTesting) :
     indeks = i + 51
     filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/tak/tak' + str(indeks) + '.wav'
-    result, graph = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
+    result, audioPlot, mfccPlot = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient, False)
     if result == 'TAK':
       totalTrueTak += 1
     takResult.append(result)
@@ -35,7 +35,7 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   for i in range(totalTesting) :
     indeks = i + 51
     filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/slap/slap' + str(indeks) + '.wav'
-    result, graph = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
+    result, audioPlot, mfccPlot = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient, False)
     if result == 'SLAP':
       totalTrueSlap += 1
     slapResult.append(result)
@@ -90,7 +90,7 @@ def tonePatternAutomaticIdentification(frameLength, hopLength, mfccCoefficient, 
       filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/tonePattern/' + tonePattern + '2_' + str(i+1) + '.wav'
       
       identification = []
-      result = tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient)
+      result = tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient, False)
       identification.append(result)
 
       if tonePattern == 'baladi' :

@@ -49,9 +49,10 @@ def identification(request):
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      result, graph = basicToneIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']))
+      result, audioPlot, mfccPlot = basicToneIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), True)
 
-      context['graph'] = graph
+      context['audioPlot'] = audioPlot
+      context['mfccPlot'] = mfccPlot
       context['resultBasicTone'] = result
       context['fileLocation'] = '/temp/temp.wav'
       context['filename'] = inputFile.name
@@ -63,7 +64,7 @@ def identification(request):
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      result = tonePatternIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']))
+      result = tonePatternIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), True)
 
       context['resultTonePattern'] = result
       context['fileLocation'] = '/temp/temp.wav'

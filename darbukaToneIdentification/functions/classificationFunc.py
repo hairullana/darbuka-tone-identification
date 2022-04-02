@@ -5,6 +5,7 @@ from .graph import get_graph
 from .mfccFunc import mfcc_extract
 from dataset.models import dataset
 import librosa
+import librosa.display
 from pydub import AudioSegment
 import matplotlib.pylab as plt
 
@@ -25,14 +26,25 @@ for x in data:
     slap.append(np.fromstring(dataExtraction.strip('[]'), dtype=float, sep=' '))
 
 # CLASSIFICATION
-def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeature) :
-  audio,_ = librosa.load(filename, 44100)
-  plt.figure(figsize=(15,4))
-  plt.plot(np.linspace(0, len(audio) / 44100, num=len(audio)), audio)
-  graph = get_graph()
+def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeature, isSingleIdentification) :
+  audio,_ = librosa.load(filename, sr=44100)
 
+  audioPlot = False
+  mfccPlot = False
+  
   # MFCC
   testing = mfcc_extract(filename, frameLength, hopLength, mfccTotalFeature)
+
+  if isSingleIdentification: 
+    plt.figure(figsize=(15,5))
+    plt.plot(np.linspace(0, len(audio) / 44100, num=len(audio)), audio)
+    audioPlot = get_graph()
+
+
+    plt.figure(figsize=(15,5))
+    librosa.display.specshow(testing, x_axis='time', sr=44100)
+    mfccPlot = get_graph()
+
   # MEAN OF EACH COEFFICIENT
   testing = np.mean(testing, axis=1)
   # CALCULATE DISTANCE
@@ -98,9 +110,9 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
   # print(k_dum)
   # print(k_tak)
   # print(k_slap)
-  return result, graph
+  return result, audioPlot, mfccPlot
 
-def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient):
+def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient, isSingleIdentification):
   x, sr = librosa.load(filename, sr=44100)
   onsetDetection = librosa.onset.onset_detect(x, sr=sr, units='time')
   while len(onsetDetection) > 5 :
@@ -117,7 +129,10 @@ def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficie
         end = int(librosa.get_duration(filename=filename)*1000)
     newAudio = newAudio[start:end]
     newAudio.export('temp.wav', format="wav")
-    result, graph = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient)
+    if isSingleIdentification :
+      result, audioPlot, mfccPlot = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient, True)
+    else :
+      result, audioPlot, mfccPlot = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient, False)
 
     toneDetect.append(result)
     
