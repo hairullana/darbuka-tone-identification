@@ -31,6 +31,7 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
 
   audioPlot = False
   mfccPlot = False
+  knnPlot = False
   
   # MFCC
   testing = mfcc_extract(filename, frameLength, hopLength, mfccTotalFeature)
@@ -40,10 +41,12 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
     plt.plot(np.linspace(0, len(audio) / 44100, num=len(audio)), audio)
     audioPlot = get_graph()
 
-
     plt.figure(figsize=(15,5))
     librosa.display.specshow(testing, x_axis='time', sr=44100)
+    plt.colorbar(format="%+2f")
     mfccPlot = get_graph()
+
+
 
   # MEAN OF EACH COEFFICIENT
   testing = np.mean(testing, axis=1)
@@ -107,10 +110,13 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
   else :
     result = 'DUM / TAK / SLAP'
   
-  # print(k_dum)
-  # print(k_tak)
-  # print(k_slap)
-  return result, audioPlot, mfccPlot
+  if isSingleIdentification:
+    plt.figure(figsize=(15, 5))
+    plt.bar(['dum', 'tak', 'slap'], [k_dum, k_tak, k_slap])
+    plt.suptitle('KNN Result')
+    knnPlot = get_graph()
+  
+  return result, audioPlot, mfccPlot, knnPlot
 
 def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient, isSingleIdentification):
   x, sr = librosa.load(filename, sr=44100)
@@ -130,9 +136,9 @@ def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficie
     newAudio = newAudio[start:end]
     newAudio.export('temp.wav', format="wav")
     if isSingleIdentification :
-      result, audioPlot, mfccPlot = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient, True)
+      result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient, True)
     else :
-      result, audioPlot, mfccPlot = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient, False)
+      result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient, False)
 
     toneDetect.append(result)
     

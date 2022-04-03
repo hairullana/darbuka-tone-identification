@@ -49,10 +49,11 @@ def identification(request):
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      result, audioPlot, mfccPlot = basicToneIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), True)
+      result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), True)
 
       context['audioPlot'] = audioPlot
       context['mfccPlot'] = mfccPlot
+      context['knnPlot'] = knnPlot
       context['resultBasicTone'] = result
       context['fileLocation'] = '/temp/temp.wav'
       context['filename'] = inputFile.name
