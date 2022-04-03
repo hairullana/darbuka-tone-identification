@@ -1,3 +1,4 @@
+from email.mime import audio
 import os
 from django.shortcuts import render
 from .functions.automaticClassificationFunc import tonePatternAutomaticIdentification, basicToneAutomaticIdentification
@@ -40,7 +41,7 @@ def identification(request):
     if 'basicToneAutomatic' in request.POST :
       context['dumResult'], context['takResult'], context['slapResult'], context['accuracyResult'] = basicToneAutomaticIdentification(float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), int(context['k']))
     elif 'tonePatternAutomatic' in request.POST :
-      context['baladiResult'], context['maqsumResult'], context['sayyidiResult'], context['accuracyResult'] = tonePatternAutomaticIdentification(float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), int(context['k']))
+      context['audioPlotBeforeOnsetDetection'], context['baladiResult'], context['maqsumResult'], context['sayyidiResult'], context['accuracyResult'], context['plots'] = tonePatternAutomaticIdentification(float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), int(context['k']))
     elif 'basicTone' in request.POST and request.FILES:
       dir = 'temp'
       for f in os.listdir(dir):
@@ -65,8 +66,10 @@ def identification(request):
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      result = tonePatternIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), True)
+      audioPlotBeforeOnsetDetection, result, plots = tonePatternIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), True)
 
+      context['audioPlotBeforeOnsetDetection'] = audioPlotBeforeOnsetDetection
+      context['plots'] = plots
       context['resultTonePattern'] = result
       context['fileLocation'] = '/temp/temp.wav'
       context['filename'] = inputFile.name

@@ -90,7 +90,7 @@ def tonePatternAutomaticIdentification(frameLength, hopLength, mfccCoefficient, 
       filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/tonePattern/' + tonePattern + '2_' + str(i+1) + '.wav'
       
       identification = []
-      result = tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient, False)
+      audioPlotBeforeOnsetDetection, result, plots = tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient, False)
       identification.append(result)
 
       if tonePattern == 'baladi' :
@@ -137,4 +137,4 @@ def tonePatternAutomaticIdentification(frameLength, hopLength, mfccCoefficient, 
   accuracyResult += "DUM Tone = " + str(totalTrueDum) + "/" + str(totalDum) + " (" + str("{:.2f}".format(totalTrueDum/totalDum*100)) + "%)<br/>"
   accuracyResult += "TAK Tone = " + str(totalTrueTak) + "/" + str(totalTak) + " (" + str("{:.2f}".format(totalTrueTak/totalTak*100)) + "%)<br/>"
 
-  return baladiResult, maqsumResult, sayyidiResult, accuracyResult
+  return audioPlotBeforeOnsetDetection, baladiResult, maqsumResult, sayyidiResult, accuracyResult, plots

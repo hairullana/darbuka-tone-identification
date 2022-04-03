@@ -34,22 +34,10 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
   knnPlot = False
   
   # MFCC
-  testing = mfcc_extract(filename, frameLength, hopLength, mfccTotalFeature)
-
-  if isSingleIdentification: 
-    plt.figure(figsize=(15,5))
-    plt.plot(np.linspace(0, len(audio) / 44100, num=len(audio)), audio)
-    audioPlot = get_graph()
-
-    plt.figure(figsize=(15,5))
-    librosa.display.specshow(testing, x_axis='time', sr=44100)
-    plt.colorbar(format="%+2f")
-    mfccPlot = get_graph()
-
-
+  mfcc = mfcc_extract(filename, frameLength, hopLength, mfccTotalFeature)
 
   # MEAN OF EACH COEFFICIENT
-  testing = np.mean(testing, axis=1)
+  testing = np.mean(mfcc, axis=1)
   # CALCULATE DISTANCE
   data_jarak = []
   for nada_dum in dum :
@@ -111,9 +99,20 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
     result = 'DUM / TAK / SLAP'
   
   if isSingleIdentification:
-    plt.figure(figsize=(15, 5))
-    plt.bar(['dum', 'tak', 'slap'], [k_dum, k_tak, k_slap])
-    plt.suptitle('KNN Result')
+    plt.figure(figsize=(15,5))
+    plt.title('Audio Plot')
+    plt.plot(np.linspace(0, len(audio) / 44100, num=len(audio)), audio)
+    audioPlot = get_graph()
+
+    plt.figure(figsize=(15,5))
+    plt.title('MFCC Extraction')
+    librosa.display.specshow(mfcc, x_axis='time', sr=44100)
+    plt.colorbar(format="%+2f")
+    mfccPlot = get_graph()
+
+    plt.figure(figsize=(15,5))
+    plt.title('KNN Classification')
+    plt.bar(['DUM', 'TAK', 'SLAP'], [k_dum, k_tak, k_slap])
     knnPlot = get_graph()
   
   return result, audioPlot, mfccPlot, knnPlot
@@ -123,16 +122,27 @@ def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficie
   onsetDetection = librosa.onset.onset_detect(x, sr=sr, units='time')
   while len(onsetDetection) > 5 :
     onsetDetection = np.delete(onsetDetection, 0)
+  
+  audioPlotBeforeOnsetDetection = False
+
+  if isSingleIdentification:
+    plt.figure(figsize=(15,5))
+    plt.title('Audio Plot (Before Onset Detection)')
+    plt.plot(np.linspace(0, len(x) / 44100, num=len(x)), x)
+    audioPlotBeforeOnsetDetection = get_graph()
+
   toneDetect = []
+  plots = []
   j=1
 
   for onset in onsetDetection:
+    plot = []
     newAudio = AudioSegment.from_wav(filename)
     start = int(onset*1000)
     if j != len(onsetDetection) :
-        end = int(onsetDetection[j]*1000)
+      end = int(onsetDetection[j]*1000)
     else :
-        end = int(librosa.get_duration(filename=filename)*1000)
+      end = int(librosa.get_duration(filename=filename)*1000)
     newAudio = newAudio[start:end]
     newAudio.export('temp.wav', format="wav")
     if isSingleIdentification :
@@ -141,8 +151,12 @@ def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficie
       result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient, False)
 
     toneDetect.append(result)
+    plot.append(audioPlot)
+    plot.append(mfccPlot)
+    plot.append(knnPlot)
+    plots.append(plot)
     
     j += 1
 
   os.remove('temp.wav')
-  return toneDetect
+  return audioPlotBeforeOnsetDetection, toneDetect, plots

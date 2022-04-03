@@ -345,6 +345,21 @@
 									<source src="{{ fileLocation }}" type="audio/wav">
 								</audio>
 							</h3>
+							<img src="data:image/png;base64, {{ audioPlotBeforeOnsetDetection|safe }}" alt="" style="width:100%">
+							
+							<h3 class="text-bold">ONSET DETECTION</h3>
+							{% for plot in plots %}
+								<div class="text-center">
+									<h4>Identification Tone - {{ forloop.counter }}</h4>
+									{% for image in plot %}
+										<div class="col-md-10 col-md-offset-1">
+											<img src="data:image/png;base64, {{ image|safe }}" alt="" style="width:100%">
+										</div>
+									{% endfor %}
+										
+								</div>
+							{% endfor %}
+								
 							</div>
 						</div>
 					</div>
