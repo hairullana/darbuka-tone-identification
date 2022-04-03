@@ -117,7 +117,7 @@
 										</h4>
 										<p>
 											<audio controls>
-												<source src="{% static 'dataset/toneBasic/dum/dum' %}{{ forloop.counter }}.wav" type="audio/wav">
+												<source src="{% static 'dataset/toneBasicNoise/dum/dum' %}{{ forloop.counter|add:'50' }}.wav" type="audio/wav">
 											</audio>
 										</p>
 									</div>
@@ -142,7 +142,7 @@
 										</h4>
 										<p>
 											<audio controls>
-												<source src="{% static 'dataset/toneBasic/tak/tak' %}{{ forloop.counter }}.wav" type="audio/wav">
+												<source src="{% static 'dataset/toneBasicNoise/tak/tak' %}{{ forloop.counter|add:'50' }}.wav" type="audio/wav">
 											</audio>
 										</p>
 									</div>
@@ -167,7 +167,7 @@
 										</h4>
 										<p>
 											<audio controls>
-												<source src="{% static 'dataset/toneBasic/slap/slap' %}{{ forloop.counter }}.wav" type="audio/wav">
+												<source src="{% static 'dataset/toneBasicNoise/slap/slap' %}{{ forloop.counter|add:'50' }}.wav" type="audio/wav">
 											</audio>
 										</p>
 									</div>
@@ -313,6 +313,7 @@
 								</h3>
 								<img src="data:image/png;base64, {{ audioPlot|safe }}" alt="" style="width:100%">
 								<img src="data:image/png;base64, {{ mfccPlot|safe }}" alt="" style="width:100%">
+								<img src="data:image/png;base64, {{ knnPlot|safe }}" alt="" style="width:100%">
 							</div>
 						</div>
 					</div>
