@@ -20,6 +20,15 @@
 		</div>
 	</section>
 
+
+	
+	{% if error %}
+		<div class="text-danger">
+			<strong>{{ error }}</strong>
+		</div>
+	{% endif %}
+		
+
 	<!-- input parameter -->
 	<section class="section">
 		<div class="container">
@@ -61,17 +70,35 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-3 mt-10">
+							<div class="col-sm-6 form-group">
+								<div class="col-6 mt-10">
+									<select name="basicToneType" class="form-control">
+										<option value="DUM">DUM</option>
+										<option value="TAK">TAK</option>
+										<option value="SLAP">SLAP</option>
+									</select>
+								</div>
+								<div class="col-6 mt-10">
+									<button class="btn btn-default" name="basicTone" type="submit">Basic Tone</button>
+								</div>
+							</div>
+							<div class="col-sm-6 form-group">
+								<div class="col-6 mt-10">
+									<select name="tonePatternType" class="form-control">
+										<option value="BALADI">BALADI</option>
+										<option value="MAQSUM">MAQSUM</option>
+										<option value="SAYYIDI">SAYYIDI</option>
+									</select>
+								</div>
+								<div class="col-6 mt-10">
+									<button class="btn btn-default" name="tonePattern" type="submit">Tone Pattern</button>
+								</div>
+							</div>
+							<div class="col-sm-6 mt-10">
 								<button class="btn btn-default" name="basicToneAutomatic" type="submit">Basic Tone (Automatic)</button>
 							</div>
-							<div class="col-sm-3 mt-10">
+							<div class="col-sm-6 mt-10">
 								<button class="btn btn-default" name="tonePatternAutomatic" type="submit">Tone Pattern (Automatic)</button>
-							</div>
-							<div class="col-sm-3 mt-10">
-								<button class="btn btn-default" name="basicTone" type="submit">Basic Tone</button>
-							</div>
-							<div class="col-sm-3 mt-10">
-								<button class="btn btn-default" name="tonePattern" type="submit">Tone Pattern</button>
 							</div>
 						</div>
 					</form>
@@ -305,7 +332,8 @@
 						<div class="col">
 							<div class="block text-center">
 								<h3>Result of <em>{{ filename }}</em></h3>
-								<h3><strong>{{ resultBasicTone }}</strong></h3>
+								<h3>Basic Tone Type: {{ basicToneType }}</h3>
+								<h3><strong>{{ resultBasicTone }}</strong> ({{ toneResult }})</h3>
 								<h3>
 									<audio controls>
 										<source src="{{ fileLocation }}" type="audio/wav">
@@ -339,7 +367,9 @@
 						<div class="col">
 							<div class="block text-center">
 								<h3>Result of <em>{{ filename }}</em></h3>
-								<h3><strong>{{ resultTonePattern}}</strong></h3>
+								<h3>Tone Pattern Type: {{ tonePatternType }} ({{ tonePattern }})</h3>
+								<h3><strong>{{ resultTonePattern }}</strong></h3>
+								<h3><strong>{{ tonePatternResult }}</strong></h3>
 								<h3>
 									<audio controls>
 									<source src="{{ fileLocation }}" type="audio/wav">

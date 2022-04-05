@@ -52,6 +52,12 @@ def identification(request):
 
       result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), True)
 
+      if request.POST['basicToneType'] == result :
+        context['toneResult'] = '✅'
+      else :
+        context['toneResult'] = '❌'
+
+      context['basicToneType'] = request.POST['basicToneType']
       context['audioPlot'] = audioPlot
       context['mfccPlot'] = mfccPlot
       context['knnPlot'] = knnPlot
@@ -68,6 +74,23 @@ def identification(request):
 
       audioPlotBeforeOnsetDetection, result, plots = tonePatternIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), True)
 
+      if request.POST['tonePatternType'] == 'BALADI' :
+        tonePattern = ['DUM', 'DUM', 'TAK', 'DUM', 'TAK']
+      elif request.POST['tonePatternType'] == 'MAQSUM' :
+        tonePattern = ['DUM', 'TAK', 'TAK', 'DUM', 'TAK']
+      elif request.POST['tonePatternType'] == 'SAYYIDI' :
+        tonePattern = ['DUM', 'TAK', 'DUM', 'DUM', 'TAK']
+      
+      tonePatternResult = []
+      for i in range(5):
+        if tonePattern[i] == result[i]:
+          tonePatternResult.append('✅')
+        else :
+          tonePatternResult.append('❌')
+
+      context['tonePatternType'] = request.POST['tonePatternType']
+      context['tonePattern'] = tonePattern
+      context['tonePatternResult'] = tonePatternResult
       context['audioPlotBeforeOnsetDetection'] = audioPlotBeforeOnsetDetection
       context['plots'] = plots
       context['resultTonePattern'] = result
