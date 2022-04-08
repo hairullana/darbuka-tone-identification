@@ -143,7 +143,7 @@ def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficie
       end = int(onsetDetection[j]*1000)
     else :
       end = int(librosa.get_duration(filename=filename)*1000)
-    newAudio = newAudio[start:end]
+    newAudio = newAudio[start:end]  
     newAudio.export('temp.wav', format="wav")
     if isSingleIdentification :
       result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient, True)
