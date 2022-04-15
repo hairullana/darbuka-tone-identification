@@ -15,11 +15,11 @@ def training(request):
   context = {}
   
   if 'trainingData' in request.POST:
-    context['trainingResult'] = trainingData(float(request.POST['frameLength']), float(request.POST['hopLength']), int(request.POST['mfccCoefficient']))
+    context['trainingResult'] = trainingData(float(request.POST['frameLength']), float(request.POST['overlap']), int(request.POST['mfccCoefficient']))
   
   mfcc_parameter = mfcc_parameters.objects.all()[0]
   context['frameLength'] = float(mfcc_parameter.frame_length)
-  context['hopLength'] = float(mfcc_parameter.hop_length)
+  context['overlap'] = float(mfcc_parameter.overlap)
   context['mfccCoefficient'] = int(mfcc_parameter.mfcc_coefficient)
 
   return render(request, 'training.html', context)
@@ -30,7 +30,7 @@ def identification(request):
 
   context = {
     'frameLength': float(mfcc_parameter.frame_length),
-    'hopLength': float(mfcc_parameter.hop_length),
+    'overlap': float(mfcc_parameter.overlap),
     'mfccCoefficient': int(mfcc_parameter.mfcc_coefficient),
     'k': 3,
   }
@@ -39,9 +39,9 @@ def identification(request):
     context['k'] = request.POST['k']
 
     if 'basicToneAutomatic' in request.POST :
-      context['dumResult'], context['takResult'], context['slapResult'], context['accuracyResult'] = basicToneAutomaticIdentification(float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), int(context['k']))
+      context['dumResult'], context['takResult'], context['slapResult'], context['accuracyResult'] = basicToneAutomaticIdentification(float(context['frameLength']), float(context['overlap']), int(context['mfccCoefficient']), int(context['k']))
     elif 'tonePatternAutomatic' in request.POST :
-      context['audioPlotBeforeOnsetDetection'], context['baladiResult'], context['maqsumResult'], context['sayyidiResult'], context['accuracyResult'], context['plots'] = tonePatternAutomaticIdentification(float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), int(context['k']))
+      context['audioPlotBeforeOnsetDetection'], context['baladiResult'], context['maqsumResult'], context['sayyidiResult'], context['accuracyResult'], context['plots'] = tonePatternAutomaticIdentification(float(context['frameLength']), float(context['overlap']), int(context['mfccCoefficient']), int(context['k']))
     elif 'basicTone' in request.POST and request.FILES:
       dir = 'temp'
       for f in os.listdir(dir):
@@ -50,7 +50,7 @@ def identification(request):
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), True)
+      result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['overlap']), int(context['mfccCoefficient']), True)
 
       if request.POST['basicToneType'] == result :
         context['toneResult'] = '✅'
@@ -72,7 +72,7 @@ def identification(request):
       fs = FileSystemStorage()
       fs.save('temp.wav', inputFile)
 
-      audioPlotBeforeOnsetDetection, result, plots = tonePatternIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['hopLength']), int(context['mfccCoefficient']), True)
+      audioPlotBeforeOnsetDetection, result, plots = tonePatternIdentification('temp/temp.wav', int(context['k']), float(context['frameLength']), float(context['overlap']), int(context['mfccCoefficient']), True)
 
       if request.POST['tonePatternType'] == 'BALADI' :
         tonePattern = ['DUM', 'DUM', 'TAK', 'DUM', 'TAK']

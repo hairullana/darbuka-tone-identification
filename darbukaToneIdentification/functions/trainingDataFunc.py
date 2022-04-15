@@ -3,12 +3,12 @@ from .mfccFunc import mfcc_extract
 import numpy as np
 from mfcc_parameters.models import mfcc_parameters
 
-def trainingData(frameLength, hopLength, mfccCoefficient):
+def trainingData(frameLength, overlap, mfccCoefficient):
   trainingResult = ""
 
   mfccParameter = mfcc_parameters.objects.all()[0]
   mfccParameter.frame_length = frameLength
-  mfccParameter.hop_length = hopLength
+  mfccParameter.overlap = overlap
   mfccParameter.mfcc_coefficient = mfccCoefficient
   mfccParameter.save()
 
@@ -33,7 +33,7 @@ def trainingData(frameLength, hopLength, mfccCoefficient):
       for j in range(50) :
         filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/' + i + '/' + i + str(j+1) + '.wav'
         # EXTRACTION
-        mfccResult = mfcc_extract(filename, frameLength, hopLength, mfccCoefficient)
+        mfccResult = mfcc_extract(filename, frameLength, overlap, mfccCoefficient)
         # MEAN OF EACH COEFFICIENT
         mfccResult = np.mean(mfccResult, axis=1)
         # CONVERT TO STRING

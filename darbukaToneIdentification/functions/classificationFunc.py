@@ -26,7 +26,7 @@ for x in data:
     slap.append(np.fromstring(dataExtraction.strip('[]'), dtype=float, sep=' '))
 
 # CLASSIFICATION
-def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeature, isSingleIdentification) :
+def basicToneIdentification(filename, k, frameLength, overlap, mfccTotalFeature, isSingleIdentification) :
   audio,_ = librosa.load(filename, sr=44100)
 
   audioPlot = False
@@ -34,7 +34,7 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
   knnPlot = False
   
   # MFCC
-  mfcc = mfcc_extract(filename, frameLength, hopLength, mfccTotalFeature)
+  mfcc = mfcc_extract(filename, frameLength, overlap, mfccTotalFeature)
 
   # MEAN OF EACH COEFFICIENT
   testing = np.mean(mfcc, axis=1)
@@ -117,7 +117,7 @@ def basicToneIdentification(filename, k, frameLength, hopLength, mfccTotalFeatur
   
   return result, audioPlot, mfccPlot, knnPlot
 
-def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient, isSingleIdentification):
+def tonePatternIdentification(filename, k, frameLength, overlap, mfccCoefficient, isSingleIdentification):
   x, sr = librosa.load(filename, sr=44100)
   onsetDetection = librosa.onset.onset_detect(x, sr=sr, units='time')
   while len(onsetDetection) > 5 :
@@ -146,9 +146,9 @@ def tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficie
     newAudio = newAudio[start:end]  
     newAudio.export('temp.wav', format="wav")
     if isSingleIdentification :
-      result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient, True)
+      result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp.wav', k, frameLength, overlap, mfccCoefficient, True)
     else :
-      result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp.wav', k, frameLength, hopLength, mfccCoefficient, False)
+      result, audioPlot, mfccPlot, knnPlot = basicToneIdentification('temp.wav', k, frameLength, overlap, mfccCoefficient, False)
 
     toneDetect.append(result)
     plot.append(audioPlot)

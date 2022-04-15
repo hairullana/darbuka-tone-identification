@@ -1,7 +1,7 @@
 from .classificationFunc import basicToneIdentification, tonePatternIdentification
 from django.core.cache import cache
 
-def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k):
+def basicToneAutomaticIdentification(frameLength, overlap, mfccCoefficient, k):
   cache.clear()
   dumResult = []
   takResult = []
@@ -17,7 +17,7 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   for i in range(totalTesting) :
     indeks = i + 51
     filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/dum/dum' + str(indeks) + '.wav'
-    result, audioPlot, mfccPlot, knnPlot = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient, False)
+    result, audioPlot, mfccPlot, knnPlot = basicToneIdentification(filename, k, frameLength, overlap, mfccCoefficient, False)
     if result == 'DUM':
       totalTrueDum += 1
     dumResult.append(result)
@@ -26,7 +26,7 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   for i in range(totalTesting) :
     indeks = i + 51
     filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/tak/tak' + str(indeks) + '.wav'
-    result, audioPlot, mfccPlot, knnPlot = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient, False)
+    result, audioPlot, mfccPlot, knnPlot = basicToneIdentification(filename, k, frameLength, overlap, mfccCoefficient, False)
     if result == 'TAK':
       totalTrueTak += 1
     takResult.append(result)
@@ -35,7 +35,7 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   for i in range(totalTesting) :
     indeks = i + 51
     filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/slap/slap' + str(indeks) + '.wav'
-    result, audioPlot, mfccPlot, knnPlot = basicToneIdentification(filename, k, frameLength, hopLength, mfccCoefficient, False)
+    result, audioPlot, mfccPlot, knnPlot = basicToneIdentification(filename, k, frameLength, overlap, mfccCoefficient, False)
     if result == 'SLAP':
       totalTrueSlap += 1
     slapResult.append(result)
@@ -50,7 +50,7 @@ def basicToneAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k)
   return dumResult, takResult, slapResult, accuracyResult
 
 
-def tonePatternAutomaticIdentification(frameLength, hopLength, mfccCoefficient, k):
+def tonePatternAutomaticIdentification(frameLength, overlap, mfccCoefficient, k):
   cache.clear()
 
   baladiResult = []
@@ -90,7 +90,7 @@ def tonePatternAutomaticIdentification(frameLength, hopLength, mfccCoefficient, 
       filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/tonePattern/' + tonePattern + '2_' + str(i+1) + '.wav'
       
       identification = []
-      audioPlotBeforeOnsetDetection, result, plots = tonePatternIdentification(filename, k, frameLength, hopLength, mfccCoefficient, False)
+      audioPlotBeforeOnsetDetection, result, plots = tonePatternIdentification(filename, k, frameLength, overlap, mfccCoefficient, False)
       identification.append(result)
 
       if tonePattern == 'baladi' :
