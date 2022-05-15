@@ -31,7 +31,7 @@ def trainingData(frameLength, overlap, mfccCoefficient):
     # TRAINING
     for i in toneType :
       for j in range(50) :
-        filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/' + i + '/' + i + str(j+1) + '.wav'
+        filename = 'C:/Coding/darbukaToneIdentification/static/dataset/toneBasicNoise/' + i + '/' + i + str(j+1) + '.wav'
         # EXTRACTION
         mfccResult = mfcc_extract(filename, frameLength, overlap, mfccCoefficient)
         # MEAN OF EACH COEFFICIENT

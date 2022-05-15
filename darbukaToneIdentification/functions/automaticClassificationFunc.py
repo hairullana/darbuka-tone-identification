@@ -16,7 +16,7 @@ def basicToneAutomaticIdentification(frameLength, overlap, mfccCoefficient, k):
   # TESTING DUM
   for i in range(totalTesting) :
     indeks = i + 51
-    filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/dum/dum' + str(indeks) + '.wav'
+    filename = 'C:/Coding/darbukaToneIdentification/static/dataset/toneBasicNoise/dum/dum' + str(indeks) + '.wav'
     result, audioPlot, mfccPlot, knnPlot = basicToneIdentification(filename, k, frameLength, overlap, mfccCoefficient, False)
     if result == 'DUM':
       totalTrueDum += 1
@@ -25,7 +25,7 @@ def basicToneAutomaticIdentification(frameLength, overlap, mfccCoefficient, k):
   # TESTING TAK
   for i in range(totalTesting) :
     indeks = i + 51
-    filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/tak/tak' + str(indeks) + '.wav'
+    filename = 'C:/Coding/darbukaToneIdentification/static/dataset/toneBasicNoise/tak/tak' + str(indeks) + '.wav'
     result, audioPlot, mfccPlot, knnPlot = basicToneIdentification(filename, k, frameLength, overlap, mfccCoefficient, False)
     if result == 'TAK':
       totalTrueTak += 1
@@ -34,7 +34,7 @@ def basicToneAutomaticIdentification(frameLength, overlap, mfccCoefficient, k):
   # TESTING SLAP
   for i in range(totalTesting) :
     indeks = i + 51
-    filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/toneBasicNoise/slap/slap' + str(indeks) + '.wav'
+    filename = 'C:/Coding/darbukaToneIdentification/static/dataset/toneBasicNoise/slap/slap' + str(indeks) + '.wav'
     result, audioPlot, mfccPlot, knnPlot = basicToneIdentification(filename, k, frameLength, overlap, mfccCoefficient, False)
     if result == 'SLAP':
       totalTrueSlap += 1
@@ -87,7 +87,7 @@ def tonePatternAutomaticIdentification(frameLength, overlap, mfccCoefficient, k)
 
   for tonePattern in tonePatterns:
     for i in range(10):
-      filename = 'D:/Ngoding/darbukaToneIdentification/static/dataset/tonePattern/' + tonePattern + '2_' + str(i+1) + '.wav'
+      filename = 'C:/Coding/darbukaToneIdentification/static/dataset/tonePattern/' + tonePattern + '2_' + str(i+1) + '.wav'
       
       identification = []
       audioPlotBeforeOnsetDetection, result, plots = tonePatternIdentification(filename, k, frameLength, overlap, mfccCoefficient, False)
