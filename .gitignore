@@ -1,3 +1,4 @@
 static/dataset/*
 temp/*
 __pycache__
+darbukaToneIdentification/functions/*
