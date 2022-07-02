@@ -161,7 +161,7 @@
 	{% endif %}
 
 	
-	{% if baladiResult %}
+	{% if tonePattern %}
 		<section class="service-list section bg-gray" id="result">
 			<div class="container">
 				<div class="row">
@@ -177,178 +177,42 @@
 						<div class="col">
 							<div class="block text-center">
 								<h3><strong>ACCURACY</strong></h3>
-								<p>{{ accuracyResult |safe }}</p>
+								<p>{{ accuracy|safe }}</p>
 							</div>
 						</div>
 					</div>
 					
-					<div class="col-md-4">
-						<div class="row">
-							<h3 class="text-center" style="margin-bottom: 15px;">
-								<strong>
-									BALADI<br/>
-									DUM - DUM - TAK - DUM - TAK
-								</strong>
-							</h3>
-							{% for result in baladiResult %}
-								<div class="col">
-									<div class="block">
-										<h4 class="text-center">
-											{{ result.0 }}
-											<br/>
-											{{ result.1 }}
-										</h4>
-										<p>
-											<audio controls>
-												<source src="{% static 'dataset/tonePattern/baladi2_' %}{{ forloop.counter }}.wav" type="audio/wav">
-											</audio>
-										</p>
-									</div>
-								</div>
-							{% endfor %}
-						</div>
-					</div>
-					
-					<div class="col-md-4">
-						<div class="row">
-							<h3 class="text-center" style="margin-bottom: 15px;">
-								<strong>
-									MAQSUM<br/>
-									DUM - TAK - TAK - DUM - TAK
-								</strong>
-							</h3>
-							{% for result in maqsumResult %}
-								<div class="col">
-									<div class="block">
-										<h4 class="text-center">
-											{{ result.0 }}
-											<br/>
-											{{ result.1 }}
-										</h4>
-										<p>
-											<audio controls>
-												<source src="{% static 'dataset/tonePattern/maqsum2_' %}{{ forloop.counter }}.wav" type="audio/wav">
-											</audio>
-										</p>
-									</div>
-								</div>
-							{% endfor %}
-						</div>
-					</div>
-
-					<div class="col-md-4">
-						<div class="row">
-							<h3 class="text-center" style="margin-bottom: 15px;">
-								<strong>
-									SAYYIDI<br/>
-									DUM - TAK - DUM - DUM - TAK
-								</strong>
-							</h3>
-							{% for result in sayyidiResult %}
-								<div class="col">
-									<div class="block">
-										<h4 class="text-center">
-											{{ result.0 }}
-											<br/>
-											{{ result.1 }}
-										</h4>
-										<p>
-											<audio controls>
-												<source src="{% static 'dataset/tonePattern/sayyidi2_' %}{{ forloop.counter }}.wav" type="audio/wav">
-											</audio>
-										</p>
-									</div>
-								</div>
-							{% endfor %}
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</section>
-	{% endif %}
-
-	{% if resultBasicTone %}
-		<section class="service-list section bg-gray" id="result">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="section-title text-center">
-							<h2>Result of Darbuka Basic Tone Identification</h2>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-
-					<div class="col-md-12">
-						<div class="col">
-							<div class="block text-center">
-								<h3>Result of <em>{{ filename }}</em></h3>
-								<h3>Basic Tone Type: {{ basicToneType }}</h3>
-								<h3><strong>{{ resultBasicTone }}</strong> ({{ toneResult }})</h3>
-								<h3>
-									<audio controls>
-										<source src="{{ fileLocation }}" type="audio/wav">
-									</audio>
+					{% for data in forData %}
+						<div class="col-md-4">
+							<div class="row">
+								<h3 class="text-center" style="margin-bottom: 15px;">
+									{% load index %}
+									<strong>
+										{{ data.1|title }}<br/>
+										{{ tonePatterns|index:data.1 }}
+									</strong>
 								</h3>
-								<img src="data:image/png;base64, {{ audioPlot|safe }}" alt="" style="width:100%">
-								<img src="data:image/png;base64, {{ mfccPlot|safe }}" alt="" style="width:100%">
-								<img src="data:image/png;base64, {{ knnPlot|safe }}" alt="" style="width:100%">
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</section>
-	{% endif %}
-
-	{% if resultTonePattern %}
-		<section class="service-list section bg-gray" id="result">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="section-title text-center">
-							<h2>Result of Darbuka Tone Pattern Identification</h2>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-
-					<div class="col-md-12">
-						<div class="col">
-							<div class="block text-center">
-								<h3>Result of <em>{{ filename }}</em></h3>
-								<h3>Tone Pattern Type: {{ tonePatternType }} ({{ tonePattern }})</h3>
-								<h3><strong>{{ resultTonePattern }}</strong></h3>
-								<h3><strong>{{ tonePatternResult }}</strong></h3>
-								<h3>
-									<audio controls>
-									<source src="{{ fileLocation }}" type="audio/wav">
-								</audio>
-							</h3>
-							<img src="data:image/png;base64, {{ audioPlotBeforeOnsetDetection|safe }}" alt="" style="width:100%">
-							
-							<h3 class="text-bold">ONSET DETECTION</h3>
-							{% for plot in plots %}
-								<div class="text-center">
-									<h4>Identification Tone - {{ forloop.counter }}</h4>
-									{% for image in plot %}
-										<div class="col-md-10 col-md-offset-1">
-											<img src="data:image/png;base64, {{ image|safe }}" alt="" style="width:100%">
+								{% for i in data.0 %}
+									<div class="col">
+										<div class="block">
+											<h4 class="text-center">
+												Result: {{ patternDetect|index:i }}<br/>
+												{{ toneDetect|index:i }}<br/>
+												{{ toneChecks|index:i }}
+											</h4>
+											<p>
+												<audio controls>
+													<source src="{% static 'dataset/tonePattern/' %}{{ data.1 }}/{{ data.1 }}{{ forloop.counter }}.wav" type="audio/wav">
+												</audio>
+											</p>
 										</div>
-									{% endfor %}
-										
-								</div>
-							{% endfor %}
-								
+									</div>
+								{% endfor %}
 							</div>
 						</div>
-					</div>
-
+					{% endfor %}
 				</div>
 			</div>
 		</section>
 	{% endif %}
-
 {% endblock body %}

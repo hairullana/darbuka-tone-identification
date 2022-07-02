@@ -8,24 +8,13 @@ from .functions.trainingDataFunc import trainingData
 from .functions.mfccFunc import mfcc_extract
 from mfcc_parameters.models import mfcc_parameters
 from django.core.cache import cache
-import math
+import librosa
+import numpy as np
+from pydub import AudioSegment
 import pickle
 
 def index(request):
   return render(request, 'index.html')
-
-def training(request):
-  context = {}
-  
-  if 'trainingData' in request.POST:
-    context['trainingResult'] = trainingData(float(request.POST['frameLength']), float(request.POST['overlap']), int(request.POST['mfccCoefficient']))
-  
-  mfcc_parameter = mfcc_parameters.objects.all()[0]
-  context['frameLength'] = float(mfcc_parameter.frame_length)
-  context['overlap'] = float(mfcc_parameter.overlap)
-  context['mfccCoefficient'] = int(mfcc_parameter.mfcc_coefficient)
-
-  return render(request, 'training.html', context)
 
 def developerIdentification(request):
   cache.clear()
@@ -45,9 +34,9 @@ def developerIdentification(request):
     if 'basicTone' in request.POST :
       # load dataset
       path = 'C:/Coding/darbukaToneIdentification/static/dataset/toneBasic/test'
-      tone_type = ['dum', 'tak', 'slap']
+      toneType = ['dum', 'tak', 'slap']
       datasetTrain = []
-      for tone in tone_type:
+      for tone in toneType:
         for data in os.listdir(f'{path}/{tone}'):
           toneData = f'{path}/{tone}/{data}'
           extract = mfcc_extract(toneData, context['frameLength'], context['overlap'], context['mfccCoefficients'])
@@ -86,14 +75,114 @@ def developerIdentification(request):
           if labelTest[i] == 'slap':
             totalSlapTrueIdentification += 1
 
+      # to display result
       context['basicTone'] = True
+      # for tone type
       context['forData'] = [[range(0,20), 'dum'], [range(20,40), 'tak'], [range(40,60), 'slap']]
+      # result of identification
       context['resultIdentification'] = resultIdentification
+      # display accuracy
       context['accuracy'] = f'Total: {"{:.2f}".format(totalTrueIdentification/60*100)}%<br/>Dum Tone: {"{:.2f}".format(totalDumTrueIdentification/20*100)}%<br/>Tak Tone: {"{:.2f}".format(totalTakTrueIdentification/20*100)}%<br/>Slap Tone: {"{:.2f}".format(totalSlapTrueIdentification/20*100)}%'
 
-
     elif 'tonePattern' in request.POST :
-      context['audioPlotBeforeOnsetDetection'], context['baladiResult'], context['maqsumResult'], context['sayyidiResult'], context['accuracyResult'], context['plots'] = tonePatternAutomaticIdentification(float(context['frameLength']), float(context['overlap']), int(context['mfccCoefficient']), int(context['k']))
+      path = 'C:/Coding/darbukaToneIdentification/static/dataset/tonePattern'
+      toneType = ['baladi', 'maqsum', 'sayyidi']
+      tonePattern = {
+        'baladi': ['dum', 'dum', 'tak', 'dum', 'tak'],
+        'maqsum': ['dum', 'tak', 'tak', 'dum', 'tak'],
+        'sayyidi': ['dum', 'tak', 'dum', 'dum', 'tak']
+      }
+      resultTonePattern = []
+      patternDetect = []
+      toneChecks = []
+
+      totalBaladiTrueIdentification = 0
+      totalMaqsumTrueIdentification = 0
+      totalSayyidiTrueIdentification = 0
+      totalTrueIdentification = 0
+
+      # load dataset
+      for tone in toneType:
+        for data in os.listdir(f'{path}/{tone}'):
+          toneData = f'{path}/{tone}/{data}'
+          # onset detect
+          x, sr = librosa.load(toneData, sr=44100)
+          onsetDetection = librosa.onset.onset_detect(x, sr=sr, units='time')
+          while len(onsetDetection) > 5 :
+            onsetDetection = np.delete(onsetDetection, 0)
+          # export onset and detect tone
+          toneDetect = []
+          toneCheck = []
+          i=1
+          for onset in onsetDetection:
+            newAudio = AudioSegment.from_wav(toneData)
+            start = int(onset*1000)
+            if i != len(onsetDetection) :
+              end = int(onsetDetection[i]*1000)
+            else :
+              end = int(librosa.get_duration(filename=toneData)*1000)
+            newAudio = newAudio[start:end]  
+            newAudio.export('temp.wav', format="wav")
+            mfcc = mfcc_extract('temp.wav', context['frameLength'], context['overlap'], context['mfccCoefficients'])
+
+            # load model
+            frameLength = 'fl=' + request.POST['frameLength']
+            overlap = 'o=' + request.POST['overlap'] + '%'
+            mfccCoefficients = 'c=' + request.POST['mfccCoefficients']
+            modelName = f'{frameLength}_{overlap}_{mfccCoefficients}_model.h5'
+
+            # identification with model
+            loaded_model = pickle.load(open(f'C:/Coding/darbukaToneIdentification/static/models/{modelName}', 'rb'))
+            resultIdentification = loaded_model.predict(mfcc, context['k'])
+            toneDetect.append(resultIdentification)
+            toneCheck.append('✅' if tonePattern[tone][i-1] == resultIdentification else '❌')
+
+            
+            i += 1
+
+          # check total true identification
+          print(toneDetect)
+          print(tonePattern[tone])
+          if(toneDetect == tonePattern[tone]):
+            totalTrueIdentification += 1
+            if(tone == 'baladi'):
+              totalBaladiTrueIdentification += 1
+            if(tone == 'maqsum'):
+              totalMaqsumTrueIdentification += 1
+            if(tone == 'sayyidi'):
+              totalSayyidiTrueIdentification += 1
+
+          print(totalTrueIdentification)
+
+          # check tone pattern is correct or wrong
+          if (toneDetect == tonePattern['baladi']):
+            patternDetect.append('baladi')
+          elif (toneDetect == tonePattern['maqsum']):
+            patternDetect.append('maqsum')
+          elif (toneDetect == tonePattern['sayyidi']):
+            patternDetect.append('sayyidi')
+          else:
+            patternDetect.append('not detected')
+
+
+          os.remove('temp.wav')
+          resultTonePattern.append(toneDetect)
+          toneChecks.append(toneCheck)
+      
+      # to check result
+      context['tonePattern'] = True
+      # for tone pattern type result
+      context['forData'] = [[range(0,10), 'baladi'], [range(10,20), 'maqsum'], [range(20,30), 'sayyidi']]
+      # tone pattern information
+      context['tonePatterns'] = tonePattern
+      # result tone identification [d, t, t, d, t]
+      context['toneDetect'] = resultTonePattern
+      # check tone is wrong or not
+      context['toneChecks'] = toneChecks
+      # check is pattern is wrong or not
+      context['patternDetect'] = patternDetect
+      # display accuracy
+      context['accuracy'] = f'Total: {"{:.2f}".format(totalTrueIdentification/30*100)}%<br/>Baladi Tone: {"{:.2f}".format(totalBaladiTrueIdentification/10*100)}%<br/>Maqsum Tone: {"{:.2f}".format(totalMaqsumTrueIdentification/10*100)}%<br/>Sayyidi Tone: {"{:.2f}".format(totalSayyidiTrueIdentification/10*100)}%'
 
   return render(request, 'identification-developer.html', context)
 
