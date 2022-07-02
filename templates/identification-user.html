@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+	<!-- jumbotron -->
+	<section class="page-title bg-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="block">
+						<h1>Darbuka Tone Identification</h1>
+						<p>
+							Identify Darbuka Basic Tone and Tone Pattern<br/>
+							using Mel Frequency Cepstral Coefficient (MFCC), Onset Detection and K-Nearest Neighbor (KNN) algorithm</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	
+	{% if error %}
+		<div class="text-danger">
+			<strong>{{ error }}</strong>
+		</div>
+	{% endif %}
+		
+
+	<!-- input parameter -->
+	<section class="section">
+		<div class="container">
+			<div class="row">
+				<h2 class="text-center">Darbuka Tone Identification</h2>
+				<blockquote class="d-inline">
+					<p class="mb-0"><strong class="text-uppercase text-primary">K (KNN)</strong> Merupakan nilai K dalam algortima KNN, berfungsi untuk mencari sejumlah tetangga terdekat dalam melakukan klasifikas</p>
+				</blockquote>
+
+				<div class="col-md-12">
+					<form enctype="multipart/form-data" class="row contact-form" id="contact-form" style="margin: 0 10px;" method="post" action="#result">
+						{% csrf_token %}
+						<div class="block">
+							<label for="inputFile">Input File WAV <em>(optional)</em></label>
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="form-group">
+										<input id="inputFile" name="inputFile" type="file" class="form-control" placeholder="Input File WAV">
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<button class="btn btn-default" name="basicTone" type="submit">Basic Tone</button>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<button class="btn btn-default" name="tonePattern" type="submit">Tone Pattern</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{% if resultBasicTone %}
+		<section class="service-list section bg-gray" id="result">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="section-title text-center">
+							<h2>Result of Darbuka Basic Tone Identification</h2>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="col-md-12">
+						<div class="col">
+							<div class="block text-center">
+								<h3>Result of <em>{{ filename }}</em></h3>
+								<h3>Basic Tone Type: {{ basicToneType }}</h3>
+								<h3><strong>{{ resultBasicTone }}</strong></h3>
+								<h3>
+									<audio controls>
+										<source src="{{ fileLocation }}" type="audio/wav">
+									</audio>
+								</h3>
+								<img src="data:image/png;base64, {{ audioPlot|safe }}" alt="" style="width:100%">
+								<img src="data:image/png;base64, {{ mfccPlot|safe }}" alt="" style="width:100%">
+								<img src="data:image/png;base64, {{ knnPlot|safe }}" alt="" style="width:100%">
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	{% endif %}
+
+	{% if resultTonePattern %}
+		<section class="service-list section bg-gray" id="result">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="section-title text-center">
+							<h2>Result of Darbuka Tone Pattern Identification</h2>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="col-md-12">
+						<div class="col">
+							<div class="block text-center">
+								<h3>Result of <em>{{ filename }}</em></h3>
+								<h3><strong>{{ tonePatternResult }}</strong></h3>
+								<h3>
+									<audio controls>
+									<source src="{{ fileLocation }}" type="audio/wav">
+								</audio>
+							</h3>
+							<img src="data:image/png;base64, {{ audioPlotBeforeOnsetDetection|safe }}" alt="" style="width:100%">
+							
+							<h3 class="text-bold">ONSET DETECTION</h3>
+							{% for plot in plots %}
+								<div class="text-center">
+									<h4>Identification Tone - {{ forloop.counter }}</h4>
+									{% for image in plot %}
+										<div class="col-md-10 col-md-offset-1">
+											<img src="data:image/png;base64, {{ image|safe }}" alt="" style="width:100%">
+										</div>
+									{% endfor %}
+										
+								</div>
+							{% endfor %}
+								
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	{% endif %}
+
+	
+		
+
+{% endblock body %}
