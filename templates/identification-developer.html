@@ -34,8 +34,15 @@
 		<div class="container">
 			<div class="row">
 				<h2 class="text-center">Input Parameter</h2>
+				<blockquote class="d-inline">
+					<p class="mb-0"><strong class="text-uppercase text-primary">Frame Length</strong> Merupakan panjang frame untuk ekstraksi suara menggunakan MFCC, panjang frame diambil dalam satuan waktu (<i>mili seconds</i></p>
+					<p class="mb-0"><strong class="text-uppercase text-primary">Overlap</strong> Merupakan panjang pergeseran frame untuk ekstraksi suara menggunakan MFCC, nilai overlap merupakan presentase dari panjang frame yang digunaka</p>
+					<p class="mb-0"><strong class="text-uppercase text-primary">MFCC Coefficients</strong> Merupakan jumlah koefisien untuk ekstraksi suara menggunakan MFCC, koefisien berisi nilai-nilai yang mewakili sinyal audio</p>
+					<p class="mb-0"><strong class="text-uppercase text-primary">K (KNN)</strong> Merupakan nilai K dalam algortima KNN, berfungsi untuk mencari sejumlah tetangga terdekat dalam melakukan klasifikas</p>
+				</blockquote>
+
 				<div class="col-md-12">
-					<form enctype="multipart/form-data" class="row contact-form" id="contact-form" style="margin: 0 10px;" method="post" action="#result">
+					<form enctype="multipart/form-data" class="row contact-form" id="contact-form" method="post" action="#result">
 						{% csrf_token %}
 						<div class="block">
 							<div class="row">

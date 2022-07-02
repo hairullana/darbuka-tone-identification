@@ -2717,3 +2717,7 @@ font header .navbar-default .navbar-nav li a:hover {
   height: 126px;
   width: auto;
 }
+
+.section {
+  padding: 50px 0px !important;
+}
