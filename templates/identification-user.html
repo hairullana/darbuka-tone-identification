@@ -32,12 +32,19 @@
 	<!-- input parameter -->
 	<section class="section">
 		<div class="container">
+
+			{# information #}
+			<blockquote class="d-inline">
+				<p class="mb-0">
+					Masukkan file suara dengan format <strong>.wav</strong> pada form yang tersedia. <br>
+					Kemudian lakukan identifikasi dengan menekan tombol: <br> <br>
+					<strong class="text-uppercase text-primary">Basic Tone</strong>, melakukan identifikasi nada dasar, sistem akan memberikan informasi hasil identifikasi nada. <br>
+					<strong class="text-uppercase text-primary">Tone Pattern</strong>, melakukan identifikasi pola nada, identifikasi melalui proses deteksi onset sehingga dapat mendeteksi nada dasar di dalam pola nada.
+				</p>
+			</blockquote>
+
 			<div class="row">
 				<h2 class="text-center">Darbuka Tone Identification</h2>
-				<blockquote class="d-inline">
-					<p class="mb-0"><strong class="text-uppercase text-primary">K (KNN)</strong> Merupakan nilai K dalam algortima KNN, berfungsi untuk mencari sejumlah tetangga terdekat dalam melakukan klasifikas</p>
-				</blockquote>
-
 				<div class="col-md-12">
 					<form enctype="multipart/form-data" class="row contact-form" id="contact-form" style="margin: 0 10px;" method="post" action="#result">
 						{% csrf_token %}
