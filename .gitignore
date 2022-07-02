@@ -1,4 +1,6 @@
 static/dataset/*
+static/models/*
 temp/*
 __pycache__
 darbukaToneIdentification/functions/*
+manage.py

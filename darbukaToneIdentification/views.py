@@ -5,8 +5,11 @@ from .functions.automaticClassificationFunc import tonePatternAutomaticIdentific
 from django.core.files.storage import FileSystemStorage
 from .functions.classificationFunc import basicToneIdentification, tonePatternIdentification
 from .functions.trainingDataFunc import trainingData
+from .functions.mfccFunc import mfcc_extract
 from mfcc_parameters.models import mfcc_parameters
 from django.core.cache import cache
+import math
+import pickle
 
 def index(request):
   return render(request, 'index.html')
@@ -24,7 +27,77 @@ def training(request):
 
   return render(request, 'training.html', context)
 
-def identification(request):
+def developerIdentification(request):
+  cache.clear()
+  context = {
+    'frameLength': 0.01,
+    'overlap': 50,
+    'mfccCoefficients': 16,
+    'k': 3
+  }
+
+  if request.method == 'POST':
+    context['frameLength'] = float(request.POST['frameLength'])
+    context['overlap'] = float(request.POST['frameLength']) / 100 * float(request.POST['overlap'])
+    context['mfccCoefficients'] = int(request.POST['mfccCoefficients'])
+    context['k'] = int(request.POST['k'])
+
+    if 'basicTone' in request.POST :
+      # load dataset
+      path = 'C:/Coding/darbukaToneIdentification/static/dataset/toneBasic/test'
+      tone_type = ['dum', 'tak', 'slap']
+      datasetTrain = []
+      for tone in tone_type:
+        for data in os.listdir(f'{path}/{tone}'):
+          toneData = f'{path}/{tone}/{data}'
+          extract = mfcc_extract(toneData, context['frameLength'], context['overlap'], context['mfccCoefficients'])
+          datasetTrain.append([extract, tone])
+      
+      # split test data
+      extractionTest = []
+      labelTest = []
+      for features, label in datasetTrain:
+        extractionTest.append(features)
+        labelTest.append(label)
+
+      # load model
+      frameLength = 'fl=' + request.POST['frameLength']
+      overlap = 'o=' + request.POST['overlap'] + '%'
+      mfccCoefficients = 'c=' + request.POST['mfccCoefficients']
+      modelName = f'{frameLength}_{overlap}_{mfccCoefficients}_model.h5'
+
+      # identification with model
+      loaded_model = pickle.load(open(f'C:/Coding/darbukaToneIdentification/static/models/{modelName}', 'rb'))
+      resultIdentification = loaded_model.predicts(extractionTest, context['k'])
+
+      # return variable to templates
+      totalTrueIdentification = 0
+      totalDumTrueIdentification = 0
+      totalTakTrueIdentification = 0
+      totalSlapTrueIdentification = 0
+
+      for i in range(len(resultIdentification)):
+        if resultIdentification[i] == labelTest[i]:
+          totalTrueIdentification += 1
+          if labelTest[i] == 'dum':
+            totalDumTrueIdentification += 1
+          if labelTest[i] == 'tak':
+            totalTakTrueIdentification += 1
+          if labelTest[i] == 'slap':
+            totalSlapTrueIdentification += 1
+
+      context['basicTone'] = True
+      context['forData'] = [[range(0,20), 'dum'], [range(20,40), 'tak'], [range(40,60), 'slap']]
+      context['resultIdentification'] = resultIdentification
+      context['accuracy'] = f'Total: {"{:.2f}".format(totalTrueIdentification/60*100)}%<br/>Dum Tone: {"{:.2f}".format(totalDumTrueIdentification/20*100)}%<br/>Tak Tone: {"{:.2f}".format(totalTakTrueIdentification/20*100)}%<br/>Slap Tone: {"{:.2f}".format(totalSlapTrueIdentification/20*100)}%'
+
+
+    elif 'tonePattern' in request.POST :
+      context['audioPlotBeforeOnsetDetection'], context['baladiResult'], context['maqsumResult'], context['sayyidiResult'], context['accuracyResult'], context['plots'] = tonePatternAutomaticIdentification(float(context['frameLength']), float(context['overlap']), int(context['mfccCoefficient']), int(context['k']))
+
+  return render(request, 'identification-developer.html', context)
+
+def userIdentification(request):
   cache.clear()
   mfcc_parameter = mfcc_parameters.objects.all()[0]
 
