@@ -65,9 +65,9 @@ def developerIdentification(request):
       overlap = 'o=' + request.POST['overlap'] + '%'
       mfccCoefficients = 'c=' + request.POST['mfccCoefficients']
       modelName = f'{frameLength}_{overlap}_{mfccCoefficients}_model.h5'
+      loaded_model = pickle.load(open(f'C:/Coding/darbukaToneIdentification/static/models/{modelName}', 'rb'))
 
       # identification with model
-      loaded_model = pickle.load(open(f'C:/Coding/darbukaToneIdentification/static/models/{modelName}', 'rb'))
       resultIdentification = loaded_model.predicts(extractionTest, context['k'])
 
       # return variable to templates
@@ -76,6 +76,7 @@ def developerIdentification(request):
       totalTakTrueIdentification = 0
       totalSlapTrueIdentification = 0
 
+      # find accuracy (true identification)
       for i in range(len(resultIdentification)):
         if resultIdentification[i] == labelTest[i]:
           totalTrueIdentification += 1
@@ -152,8 +153,6 @@ def developerIdentification(request):
             i += 1
 
           # check total true identification
-          print(toneDetect)
-          print(tonePattern[tone])
           if(toneDetect == tonePattern[tone]):
             totalTrueIdentification += 1
             if(tone == 'baladi'):
@@ -162,8 +161,6 @@ def developerIdentification(request):
               totalMaqsumTrueIdentification += 1
             if(tone == 'sayyidi'):
               totalSayyidiTrueIdentification += 1
-
-          print(totalTrueIdentification)
 
           # check tone pattern is correct or wrong
           if (toneDetect == tonePattern['baladi']):
