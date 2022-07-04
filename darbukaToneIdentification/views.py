@@ -108,10 +108,16 @@ def developerIdentification(request):
       patternDetect = []
       toneChecks = []
 
-      totalBaladiTrueIdentification = 0
-      totalMaqsumTrueIdentification = 0
-      totalSayyidiTrueIdentification = 0
-      totalTrueIdentification = 0
+      true_pattern = {
+        'baladi': 0,
+        'maqsum': 0,
+        'sayyidi': 0
+      }
+      true_tone = {
+        'dum': 0,
+        'tak': 0,
+        'slap': 0
+      }
 
       # load dataset
       for tone in toneType:
@@ -149,18 +155,15 @@ def developerIdentification(request):
             toneDetect.append(resultIdentification)
             toneCheck.append('✅' if tonePattern[tone][i-1] == resultIdentification else '❌')
 
+            if(resultIdentification == tonePattern[tone][i-1]):
+              true_tone[resultIdentification] += 1
+
             
             i += 1
 
           # check total true identification
           if(toneDetect == tonePattern[tone]):
-            totalTrueIdentification += 1
-            if(tone == 'baladi'):
-              totalBaladiTrueIdentification += 1
-            if(tone == 'maqsum'):
-              totalMaqsumTrueIdentification += 1
-            if(tone == 'sayyidi'):
-              totalSayyidiTrueIdentification += 1
+            true_pattern[tone] += 1
 
           # check tone pattern is correct or wrong
           if (toneDetect == tonePattern['baladi']):
@@ -190,7 +193,14 @@ def developerIdentification(request):
       # check is pattern is wrong or not
       context['patternDetect'] = patternDetect
       # display accuracy
-      context['accuracy'] = f'Total: {"{:.2f}".format(totalTrueIdentification/30*100)}%<br/>Baladi Tone: {"{:.2f}".format(totalBaladiTrueIdentification/10*100)}%<br/>Maqsum Tone: {"{:.2f}".format(totalMaqsumTrueIdentification/10*100)}%<br/>Sayyidi Tone: {"{:.2f}".format(totalSayyidiTrueIdentification/10*100)}%'
+      context['accuracy'] = ''
+      context['accuracy'] += f'Total: {"{:.2f}".format((true_pattern["baladi"]+true_pattern["maqsum"]+true_pattern["sayyidi"])/30*100)}%<br/>'
+      context['accuracy'] += f'Baladi Tone: {"{:.2f}".format(true_pattern["baladi"]/10*100)}%<br/>'
+      context['accuracy'] += f'Maqsum Tone: {"{:.2f}".format(true_pattern["maqsum"]/10*100)}%<br/>'
+      context['accuracy'] += f'Sayyidi Tone: {"{:.2f}".format(true_pattern["sayyidi"]/10*100)}%<br/>'
+      context['accuracy'] += f'Dum Tone: {"{:.2f}".format(true_tone["dum"]/80*100)}%<br/>'
+      context['accuracy'] += f'Tak Tone: {"{:.2f}".format(true_tone["tak"]/70*100)}%<br/>'
+      context['accuracy'] += f'Slap Tone: -'
 
   return render(request, 'identification-developer.html', context)
 
@@ -199,9 +209,9 @@ def userIdentification(request):
 
   context = {}
   frameLength = 0.01
-  overlap = 50
-  mfccCoefficients = 16
-  k = 1
+  overlap = 30
+  mfccCoefficients = 7
+  k = 9
 
   if request.method == 'POST':
     if 'basicTone' in request.POST and request.FILES:
