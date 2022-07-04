@@ -207,11 +207,13 @@ def developerIdentification(request):
 def userIdentification(request):
   cache.clear()
 
+  mfcc_parameter = mfcc_parameters.objects.all()[0]
+  frameLength = float(mfcc_parameter.frame_length)
+  overlap = float(mfcc_parameter.overlap)
+  mfccCoefficients = int(mfcc_parameter.mfcc_coefficient)
+
   context = {}
-  frameLength = 0.01
-  overlap = 30
-  mfccCoefficients = 7
-  k = 9
+  k = 1
 
   if request.method == 'POST':
     if 'basicTone' in request.POST and request.FILES:
