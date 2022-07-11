@@ -162,8 +162,15 @@ def developerIdentification(request):
             i += 1
 
           # check total true identification
-          if(toneDetect == tonePattern[tone]):
+          tempTrue = 0
+          for index, toneValue in enumerate(tonePattern[tone]):
+            if toneDetect[index] == toneValue:
+              tempTrue += 1
+          
+          if tempTrue >= 3:
             true_pattern[tone] += 1
+          # if(toneDetect == tonePattern[tone]):
+          #   true_pattern[tone] += 1
 
           # check tone pattern is correct or wrong
           if (toneDetect == tonePattern['baladi']):
