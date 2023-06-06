@@ -3,4 +3,5 @@ static/models/*
 temp/*
 __pycache__
 darbukaToneIdentification/functions/*
+darbukaToneIdentification/.env
 manage.py
