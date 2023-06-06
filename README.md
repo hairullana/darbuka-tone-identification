@@ -2,10 +2,9 @@
 
 A system to identify from the basic tone and tone pattern darbuka musical instrument using [Onset Detection](https://musicinformationretrieval.com/onset_detection.html), [Mel-Frequency Cepstral Coefficient (MFCC) algorithm](https://en.wikipedia.org/wiki/Mel-frequency_cepstrum), and [K-Nearest Neighbor (KNN) algorithm](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm)
 
-**![#f03c15](https://via.placeholder.com/15/f03c15/f03c15.png)  The tone identification functions, machine learning models, and the darbuka tone dataset are excluded in this repository. Please contact [hairullana99@gmail.com](mailto:hairullana99@gmail.com) if you want to request a function and darbuka tone dataset**
+**![#f03c15](https://via.placeholder.com/15/f03c15/f03c15.png) The darbuka tone dataset are excluded in this repository. Please contact [hairullana99@gmail.com](mailto:hairullana99@gmail.com) if you want to request darbuka tone dataset**
 
-![models](https://user-images.githubusercontent.com/56705867/179347929-57c55de2-380c-4dc5-8904-4b1d7e2232a5.png)
- ![functions](https://user-images.githubusercontent.com/56705867/175550539-05dab479-7d95-4378-ba87-13783e362828.png) ![dataset](https://user-images.githubusercontent.com/56705867/175552431-4af963e2-e05d-4fe9-b8df-0349750972c3.png)
+![dataset](https://user-images.githubusercontent.com/56705867/175552431-4af963e2-e05d-4fe9-b8df-0349750972c3.png)
 
 
 # Features
@@ -25,13 +24,13 @@ A system to identify from the basic tone and tone pattern darbuka musical instru
 
 # Technology used in the System
 
-* Python v3.9.7
-  * django v4.0.3 (backend framework)
-  * librosa v0.9.1 (python module for audio and music processing)
-  * pydub v0.25.1 (manipulate audio with an simple and easy high level interface)
-  * matplotlib v3.5.1 (python plotting package)
+* Python v3.9
+  * django v4.0 (backend framework)
+  * librosa v0.9 (python module for audio and music processing)
+  * pydub v0.25 (manipulate audio with an simple and easy high level interface)
+  * matplotlib v3.5 (python plotting package)
 * HTML, CSS
-  * bootstrap v3.3.7 (css framework)
+  * bootstrap v3.3 (css framework)
 * Javascript
   * jquery (javascript library)
 * SQL Database
