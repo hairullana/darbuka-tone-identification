@@ -10,6 +10,11 @@ from .functions.mfccFunc import mfcc_extract
 from mfcc_parameters.models import mfcc_parameters
 from django.core.cache import cache
 import pickle
+import environ
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 def index(request):
   return render(request, 'index.html')
@@ -44,7 +49,7 @@ def developerIdentification(request):
 
     if 'basicTone' in request.POST :
       # load dataset
-      path = '/media/hairullana/Data/Coding/darbukaToneIdentification/static/dataset/toneBasic/test'
+      path = env('APP_PATH') + 'static/dataset/toneBasic/test'
       toneType = ['dum', 'tak', 'slap']
       datasetTrain = []
       for tone in toneType:
@@ -65,7 +70,7 @@ def developerIdentification(request):
       overlap = 'o=' + request.POST['overlap'] + '%'
       mfccCoefficients = 'c=' + request.POST['mfccCoefficients']
       modelName = f'{frameLength}_{overlap}_{mfccCoefficients}_model.h5'
-      loaded_model = pickle.load(open(f'/media/hairullana/Data/Coding/darbukaToneIdentification/static/models/{modelName}', 'rb'))
+      loaded_model = pickle.load(open(env('APP_PATH') + 'static/models/' + modelName, 'rb'))
 
       # identification with model
       resultIdentification = loaded_model.predicts(extractionTest, context['k'])
@@ -97,7 +102,7 @@ def developerIdentification(request):
       context['accuracy'] = f'Total: {"{:.2f}".format(totalTrueIdentification/60*100)}%<br/>Dum Tone: {"{:.2f}".format(totalDumTrueIdentification/20*100)}%<br/>Tak Tone: {"{:.2f}".format(totalTakTrueIdentification/20*100)}%<br/>Slap Tone: {"{:.2f}".format(totalSlapTrueIdentification/20*100)}%'
 
     elif 'tonePattern' in request.POST :
-      path = '/media/hairullana/Data/Coding/darbukaToneIdentification/static/dataset/tonePattern'
+      path = env('APP_PATH') + 'static/dataset/tonePattern'
       toneType = ['baladi', 'maqsum', 'sayyidi']
       tonePattern = {
         'baladi': ['dum', 'dum', 'tak', 'dum', 'tak'],
@@ -150,7 +155,7 @@ def developerIdentification(request):
             modelName = f'{frameLength}_{overlap}_{mfccCoefficients}_model.h5'
 
             # identification with model
-            loaded_model = pickle.load(open(f'/media/hairullana/Data/Coding/darbukaToneIdentification/static/models/{modelName}', 'rb'))
+            loaded_model = pickle.load(open(env('APP_PATH') + 'static/models/{modelName}', 'rb'))
             resultIdentification = loaded_model.predict(mfcc, context['k'])
             toneDetect.append(resultIdentification)
             toneCheck.append('✅' if tonePattern[tone][i-1] == resultIdentification else '❌')
